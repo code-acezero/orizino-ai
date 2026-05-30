@@ -132,7 +132,7 @@ function buildHeader(brand: DocxBrand, headline: string, subline: string, idLine
               new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { before: 30 }, children: [run(subline, { size: 16, color: MUTED, allCaps: true, spacing: 20 })] }),
               new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { before: 30 }, children: [run(idLine, { size: 20, bold: true, color: INK })] }),
               new Paragraph({ alignment: AlignmentType.RIGHT, children: [run(dateLine, { size: 17, color: MUTED })] }),
-              new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { before: 30 }, children: [run(`  ${statusText.toUpperCase()}  `, { size: 16, bold: true, color: WHITE, spacing: 20 })] }),
+              new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { before: 36 }, children: [run(`◆ ${statusText.toUpperCase()}`, { size: 16, bold: true, color: GOLD, spacing: 30 })] }),
             ],
             { width: 42, align: VerticalAlign.TOP },
           ),
