@@ -73,6 +73,7 @@ const AdminRecommendations = () => {
         ...DEFAULT_CONFIG,
         ...data,
         weights: { ...DEFAULT_CONFIG.weights, ...(data.weights || {}) },
+        kind_weights: { ...DEFAULT_KIND_WEIGHTS, ...(data.kind_weights || {}) },
       });
     }
   }, [data]);
