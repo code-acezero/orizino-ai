@@ -147,6 +147,22 @@ const AdminRecommendations = () => {
                 }
               />
             </div>
+            <div className="space-y-2">
+              <Label>Freshness window (days)</Label>
+              <Input
+                type="number"
+                min={1}
+                max={90}
+                value={form.freshness_days}
+                onChange={(e) =>
+                  setForm({ ...form, freshness_days: Math.max(1, Number(e.target.value) || 1) })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                How far back to look when computing trending demand. Shorter = more reactive.
+              </p>
+            </div>
+
           </CardContent>
         </Card>
 
