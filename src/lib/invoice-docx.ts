@@ -76,7 +76,7 @@ function label(text: string) {
 function cell(children: Paragraph[], opts: Partial<{ shade: string; width: number; align: (typeof VerticalAlign)[keyof typeof VerticalAlign] | "top" | "center" | "bottom"; margins: boolean }> = {}) {
   return new TableCell({
     children,
-    verticalAlign: opts.align ?? VerticalAlign.CENTER,
+    verticalAlign: (opts.align ?? VerticalAlign.CENTER) as any,
     shading: opts.shade ? { type: ShadingType.CLEAR, color: "auto", fill: opts.shade } : undefined,
     width: opts.width ? { size: opts.width, type: WidthType.PERCENTAGE } : undefined,
     borders: noBorder(),
