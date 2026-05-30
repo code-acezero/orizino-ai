@@ -65,31 +65,27 @@ const DiscoverSection: React.FC<DiscoverSectionProps> = ({
         </div>
       </div>
 
-      {isLoading ? (
-        <SectionShimmer of="productGrid" count={limit} />
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 auto-rows-fr">
-          {products.map((p: any, i: number) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(i * 0.04, 0.4) }}
-            >
-              <ProductCard
-                id={p.id}
-                name={p.name}
-                price={p.price}
-                slug={p.slug}
-                compareAtPrice={p.compare_at_price ?? undefined}
-                thumbnail={p.thumbnail ?? undefined}
-                avgRating={p.avg_rating ?? undefined}
-                reviewCount={p.review_count ?? undefined}
-              />
-            </motion.div>
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 auto-rows-fr">
+        {products.map((p: any, i: number) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: Math.min(i * 0.04, 0.4) }}
+          >
+            <ProductCard
+              id={p.id}
+              name={p.name}
+              price={p.price}
+              slug={p.slug}
+              compareAtPrice={p.compare_at_price ?? undefined}
+              thumbnail={p.thumbnail ?? undefined}
+              avgRating={p.avg_rating ?? undefined}
+              reviewCount={p.review_count ?? undefined}
+            />
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 };
