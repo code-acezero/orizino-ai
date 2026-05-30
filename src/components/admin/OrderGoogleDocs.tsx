@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle } from "lucide-react";
+import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle, Cloud } from "lucide-react";
 import { toast } from "@/lib/app-toast";
 import { format } from "date-fns";
 import { removeOrderDocument } from "@/lib/order-documents.functions";
@@ -92,6 +92,37 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     setBusy(null);
   };
 
+  const saveToDocs = async (doc_type: "invoice" | "sticker") => {
+    setBusy(`gdocs:${doc_type}`);
+    try {
+      const { data, error } = await supabase.functions.invoke("archive-to-gdocs", {
+        body: { order_id: orderId, doc_type, trigger_reason: "manual" },
+      });
+      if (error || data?.error) {
+        const code = data?.code || "";
+        const msg =
+          code === "gdocs_not_connected"
+            ? "Google Docs is not connected yet."
+            : code === "gdocs_auth"
+            ? "Google authorization expired — please reconnect Google Docs."
+            : data?.error || error?.message || "Failed to save to Google Docs";
+        toast.error(msg);
+      } else {
+        toast.success(
+          data?.skipped
+            ? "Already saved to Google Docs"
+            : `${doc_type === "invoice" ? "Invoice" : "Sticker"} saved to Google Docs`,
+        );
+        qc.invalidateQueries({ queryKey: ["order_documents", orderId] });
+        const url = data?.document?.external_url;
+        if (url) window.open(url, "_blank");
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to save to Google Docs");
+    }
+    setBusy(null);
+  };
+
   const exportPdf = async (id: string, existing: string | null) => {
     if (existing) {
       window.open(existing, "_blank");
@@ -129,26 +160,39 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
 
   return (
     <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-3">
-      <div className="flex items-center justify-between gap-2 flex-wrap">
+      <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <div className="text-sm font-semibold flex items-center gap-2">
             <FileBox className="w-4 h-4 text-primary" /> Documents
           </div>
           <div className="text-xs text-muted-foreground">
-            Download a premium invoice & shipping label for order #{orderNumber} as Word (.docx).
+            Save the invoice & shipping label for order #{orderNumber} to Google Docs, or download locally as Word (.docx).
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
-            {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-            Invoice .docx
-          </Button>
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
-            {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
-            Sticker .docx
-          </Button>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <Button size="sm" disabled={!!busy} onClick={() => saveToDocs("invoice")} className="gap-1.5">
+              {busy === "gdocs:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Cloud className="w-3.5 h-3.5" />}
+              Invoice → Docs
+            </Button>
+            <Button size="sm" disabled={!!busy} onClick={() => saveToDocs("sticker")} className="gap-1.5">
+              {busy === "gdocs:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Cloud className="w-3.5 h-3.5" />}
+              Sticker → Docs
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
+              {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+              Invoice .docx
+            </Button>
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
+              {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
+              Sticker .docx
+            </Button>
+          </div>
         </div>
       </div>
+
 
       {isLoading ? (
         <div className="text-xs text-muted-foreground">Loading…</div>
