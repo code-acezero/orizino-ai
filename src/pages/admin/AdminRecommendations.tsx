@@ -10,9 +10,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "@/lib/app-toast";
 import { Sparkles, Sliders, Brain } from "lucide-react";
 
+const DEFAULT_KIND_WEIGHTS = {
+  view: 1,
+  hover: 0.8,
+  click: 1.5,
+  wishlist: 2.5,
+  cart: 3,
+  purchase: 4,
+  dwell: 0.5,
+};
+
 const DEFAULT_CONFIG = {
   enabled: true,
   weights: { affinity: 0.4, trending: 0.25, recent: 0.2, featured: 0.1, fresh: 0.05 },
+  kind_weights: DEFAULT_KIND_WEIGHTS,
+  freshness_days: 7,
   diversity_cap: 3,
   ai_rerank_enabled: false,
   ai_rerank_top_k: 24,
@@ -21,12 +33,22 @@ const DEFAULT_CONFIG = {
 
 type Config = typeof DEFAULT_CONFIG;
 type WeightKey = keyof Config["weights"];
+type KindKey = keyof typeof DEFAULT_KIND_WEIGHTS;
 const WEIGHT_LABELS: Record<WeightKey, string> = {
   affinity: "Personal affinity",
-  trending: "Trending (7-day)",
+  trending: "Trending",
   recent: "Recent activity",
   featured: "Featured boost",
   fresh: "New arrivals",
+};
+const KIND_LABELS: Record<KindKey, string> = {
+  view: "View",
+  hover: "Hover (interest)",
+  click: "Click",
+  wishlist: "Wishlist",
+  cart: "Add to cart",
+  purchase: "Purchase",
+  dwell: "Dwell time",
 };
 
 const AdminRecommendations = () => {
