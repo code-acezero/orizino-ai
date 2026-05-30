@@ -189,11 +189,12 @@ export const getRecommendations = createServerFn({ method: "POST" })
       }
     }
 
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const freshnessWindowMs = Math.max(1, config.freshness_days) * 24 * 60 * 60 * 1000;
+    const trendingSince = new Date(Date.now() - freshnessWindowMs).toISOString();
     const { data: trendingRows } = await supabaseAdmin
       .from("product_interactions")
       .select("product_id, kind")
-      .gte("created_at", sevenDaysAgo)
+      .gte("created_at", trendingSince)
       .limit(2000);
     const trendingScore = new Map<string, number>();
     for (const r of trendingRows ?? []) {
