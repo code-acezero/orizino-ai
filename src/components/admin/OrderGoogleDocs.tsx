@@ -92,6 +92,37 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     setBusy(null);
   };
 
+  const saveToDocs = async (doc_type: "invoice" | "sticker") => {
+    setBusy(`gdocs:${doc_type}`);
+    try {
+      const { data, error } = await supabase.functions.invoke("archive-to-gdocs", {
+        body: { order_id: orderId, doc_type, trigger_reason: "manual" },
+      });
+      if (error || data?.error) {
+        const code = data?.code || "";
+        const msg =
+          code === "gdocs_not_connected"
+            ? "Google Docs is not connected yet."
+            : code === "gdocs_auth"
+            ? "Google authorization expired — please reconnect Google Docs."
+            : data?.error || error?.message || "Failed to save to Google Docs";
+        toast.error(msg);
+      } else {
+        toast.success(
+          data?.skipped
+            ? "Already saved to Google Docs"
+            : `${doc_type === "invoice" ? "Invoice" : "Sticker"} saved to Google Docs`,
+        );
+        qc.invalidateQueries({ queryKey: ["order_documents", orderId] });
+        const url = data?.document?.external_url;
+        if (url) window.open(url, "_blank");
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to save to Google Docs");
+    }
+    setBusy(null);
+  };
+
   const exportPdf = async (id: string, existing: string | null) => {
     if (existing) {
       window.open(existing, "_blank");
