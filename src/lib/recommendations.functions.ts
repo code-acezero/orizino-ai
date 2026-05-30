@@ -163,6 +163,7 @@ export const getRecommendations = createServerFn({ method: "POST" })
       affinityRows = rows ?? [];
     }
 
+    const KIND_WEIGHT = config.kind_weights;
     const productAffinity = new Map<string, number>();
     const now = Date.now();
     for (const r of affinityRows) {
