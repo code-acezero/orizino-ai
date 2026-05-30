@@ -43,12 +43,15 @@ const DiscoverSection: React.FC<DiscoverSectionProps> = ({
           limit,
         },
       }),
-    staleTime: 5 * 60 * 1000,
+    // Keep Discover fluid — refresh recommendations frequently as browsing signals change
+    staleTime: 30 * 1000,
   });
 
   const products = data?.products ?? [];
 
-  if (!isLoading && products.length === 0) return null;
+  // Hide the entire section until recommendations are ready (no skeleton flash)
+  if (isLoading || products.length === 0) return null;
+
 
   return (
     <section className={`mt-10 sm:mt-14 ${className}`}>
