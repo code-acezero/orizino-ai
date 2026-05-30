@@ -73,7 +73,7 @@ function label(text: string) {
   });
 }
 
-function cell(children: Paragraph[], opts: Partial<{ shade: string; width: number; align: typeof VerticalAlign[keyof typeof VerticalAlign]; margins: boolean }> = {}) {
+function cell(children: Paragraph[], opts: Partial<{ shade: string; width: number; align: (typeof VerticalAlign)[keyof typeof VerticalAlign] | "top" | "center" | "bottom"; margins: boolean }> = {}) {
   return new TableCell({
     children,
     verticalAlign: opts.align ?? VerticalAlign.CENTER,
