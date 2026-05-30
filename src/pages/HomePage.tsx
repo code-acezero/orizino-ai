@@ -148,12 +148,13 @@ interface SectionConfig {
 
 const defaultSectionOrder: SectionConfig[] = [
   { id: "slider", label: "Showcase Slider", icon: "🎠", visible: true },
-  { id: "discover", label: "Discover (Personalized)", icon: "🧭", visible: true, title: "Discover", subtitle: "Picked for the way you browse", product_count: 8 },
   { id: "categories", label: "Category Grid", icon: "📂", visible: true, title: "Shop by Category" },
   { id: "category-sections", label: "Category Product Sections", icon: "📦", visible: true, product_count: 8, columns: 4 },
   { id: "featured", label: "Featured Products", icon: "⭐", visible: true, title: "Featured Products", subtitle: "Handpicked just for you", product_count: 8, columns: 4, view_all_link: "/shop" },
+  { id: "discover", label: "Discover (Personalized)", icon: "🧭", visible: true, title: "Discover", subtitle: "Picked for the way you browse", product_count: 8 },
   { id: "arrivals", label: "New Arrivals", icon: "✨", visible: true, title: "New Arrivals", subtitle: "Fresh drops just landed", product_count: 8, columns: 4, view_all_link: "/shop" },
 ];
+
 
 /** Wrapper that tracks section visibility via Intersection Observer */
 const TrackedSection: React.FC<{ sectionId: string; children: React.ReactNode }> = ({ sectionId, children }) => {
