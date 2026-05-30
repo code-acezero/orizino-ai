@@ -1573,7 +1573,22 @@ const AIChatWidget: React.FC = () => {
                           )}
                           {!isUser ? (
                             <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:mb-1 [&_p]:mt-0">
-                              <ReactMarkdown>{msg.content}</ReactMarkdown>
+                              <ReactMarkdown
+                                components={{
+                                  img: ({ node, ...props }) => (
+                                    <img
+                                      {...props}
+                                      className="rounded-lg border border-border/50 my-1.5 w-28 h-28 object-cover"
+                                      loading="lazy"
+                                    />
+                                  ),
+                                  a: ({ node, ...props }) => (
+                                    <a {...props} className="text-primary underline underline-offset-2" />
+                                  ),
+                                }}
+                              >
+                                {msg.content}
+                              </ReactMarkdown>
                             </div>
                           ) : msg.content}
                         </div>

@@ -56,6 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [notifyingRestock, setNotifyingRestock] = useState(false);
   const [flyAnim, setFlyAnim] = useState<{ src: string; rect: DOMRect } | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Fetch variant info
   const { data: variantInfo } = useQuery({
@@ -223,7 +224,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
     mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
   }, [mouseX, mouseY, isMobile]);
 
+  const handleMouseEnter = useCallback(() => {
+    if (isMobile) return;
+    // Record hover intent only after a short dwell so accidental passes don't count
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => {
+      trackInteraction(id, "hover", { source: "product_card" });
+    }, 450);
+  }, [id, isMobile]);
+
   const handleMouseLeave = useCallback(() => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
     mouseX.set(0);
     mouseY.set(0);
   }, [mouseX, mouseY]);
@@ -232,6 +246,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <motion.div
       ref={cardRef}
       onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseEnter={isMobile ? undefined : handleMouseEnter}
       onMouseLeave={isMobile ? undefined : handleMouseLeave}
       style={isMobile ? {} : {
         rotateX,

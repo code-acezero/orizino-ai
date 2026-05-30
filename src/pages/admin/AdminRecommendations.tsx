@@ -10,9 +10,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "@/lib/app-toast";
 import { Sparkles, Sliders, Brain } from "lucide-react";
 
+const DEFAULT_KIND_WEIGHTS = {
+  view: 1,
+  hover: 0.8,
+  click: 1.5,
+  wishlist: 2.5,
+  cart: 3,
+  purchase: 4,
+  dwell: 0.5,
+};
+
 const DEFAULT_CONFIG = {
   enabled: true,
   weights: { affinity: 0.4, trending: 0.25, recent: 0.2, featured: 0.1, fresh: 0.05 },
+  kind_weights: DEFAULT_KIND_WEIGHTS,
+  freshness_days: 7,
   diversity_cap: 3,
   ai_rerank_enabled: false,
   ai_rerank_top_k: 24,
@@ -21,12 +33,22 @@ const DEFAULT_CONFIG = {
 
 type Config = typeof DEFAULT_CONFIG;
 type WeightKey = keyof Config["weights"];
+type KindKey = keyof typeof DEFAULT_KIND_WEIGHTS;
 const WEIGHT_LABELS: Record<WeightKey, string> = {
   affinity: "Personal affinity",
-  trending: "Trending (7-day)",
+  trending: "Trending",
   recent: "Recent activity",
   featured: "Featured boost",
   fresh: "New arrivals",
+};
+const KIND_LABELS: Record<KindKey, string> = {
+  view: "View",
+  hover: "Hover (interest)",
+  click: "Click",
+  wishlist: "Wishlist",
+  cart: "Add to cart",
+  purchase: "Purchase",
+  dwell: "Dwell time",
 };
 
 const AdminRecommendations = () => {
@@ -51,6 +73,7 @@ const AdminRecommendations = () => {
         ...DEFAULT_CONFIG,
         ...data,
         weights: { ...DEFAULT_CONFIG.weights, ...(data.weights || {}) },
+        kind_weights: { ...DEFAULT_KIND_WEIGHTS, ...(data.kind_weights || {}) },
       });
     }
   }, [data]);
@@ -75,6 +98,9 @@ const AdminRecommendations = () => {
 
   const setWeight = (k: WeightKey, v: number) =>
     setForm((f) => ({ ...f, weights: { ...f.weights, [k]: v } }));
+
+  const setKindWeight = (k: KindKey, v: number) =>
+    setForm((f) => ({ ...f, kind_weights: { ...f.kind_weights, [k]: v } }));
 
   return (
     <div className="space-y-6">
@@ -121,6 +147,22 @@ const AdminRecommendations = () => {
                 }
               />
             </div>
+            <div className="space-y-2">
+              <Label>Freshness window (days)</Label>
+              <Input
+                type="number"
+                min={1}
+                max={90}
+                value={form.freshness_days}
+                onChange={(e) =>
+                  setForm({ ...form, freshness_days: Math.max(1, Number(e.target.value) || 1) })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                How far back to look when computing trending demand. Shorter = more reactive.
+              </p>
+            </div>
+
           </CardContent>
         </Card>
 
@@ -191,6 +233,37 @@ const AdminRecommendations = () => {
                   step={0.05}
                   value={[form.weights[k]]}
                   onValueChange={(v) => setWeight(k, v[0] ?? 0)}
+                />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sliders className="w-5 h-5" /> Signal Weights (per interaction)
+            </CardTitle>
+            <CardDescription>
+              How much each shopper action counts toward affinity and trending. Hover captures early
+              browsing interest before a click.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 sm:grid-cols-2">
+            {(Object.keys(KIND_LABELS) as KindKey[]).map((k) => (
+              <div key={k} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>{KIND_LABELS[k]}</Label>
+                  <span className="text-sm tabular-nums text-muted-foreground">
+                    {(form.kind_weights[k] ?? 0).toFixed(1)}
+                  </span>
+                </div>
+                <Slider
+                  min={0}
+                  max={5}
+                  step={0.1}
+                  value={[form.kind_weights[k] ?? 0]}
+                  onValueChange={(v) => setKindWeight(k, v[0] ?? 0)}
                 />
               </div>
             ))}

@@ -15,7 +15,7 @@ const recent = new Map<string, number>(); // dedupe key -> ts
 
 export async function trackInteraction(
   productId: string,
-  kind: "view" | "click" | "cart" | "wishlist" | "purchase" | "dwell",
+  kind: "view" | "click" | "cart" | "wishlist" | "purchase" | "dwell" | "hover",
   opts: { dwell_ms?: number; source?: string } = {},
 ) {
   if (!productId) return;
