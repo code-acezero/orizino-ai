@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
 import { Compass } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
-import SectionShimmer from "@/components/skeletons/SectionShimmer";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { getRecommendations } from "@/lib/recommendations.functions";
 
