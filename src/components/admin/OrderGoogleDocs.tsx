@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle } from "lucide-react";
+import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle, Cloud } from "lucide-react";
 import { toast } from "@/lib/app-toast";
 import { format } from "date-fns";
 import { removeOrderDocument } from "@/lib/order-documents.functions";
