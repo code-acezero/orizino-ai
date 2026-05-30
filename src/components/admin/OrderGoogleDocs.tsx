@@ -132,20 +132,20 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div>
           <div className="text-sm font-semibold flex items-center gap-2">
-            <FileBox className="w-4 h-4 text-primary" /> Google Docs Archive
+            <FileBox className="w-4 h-4 text-primary" /> Documents
           </div>
           <div className="text-xs text-muted-foreground">
-            Save invoice & shipping sticker for order #{orderNumber} to Google Drive.
+            Download a premium invoice & shipping label for order #{orderNumber} as Word (.docx).
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => archive("invoice")} className="gap-1.5">
-            {busy === "archive:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-            Save Invoice
+          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
+            {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+            Invoice .docx
           </Button>
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => archive("sticker")} className="gap-1.5">
-            {busy === "archive:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
-            Save Sticker
+          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
+            {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
+            Sticker .docx
           </Button>
         </div>
       </div>
