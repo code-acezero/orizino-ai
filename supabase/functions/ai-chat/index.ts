@@ -194,8 +194,14 @@ async function buildSystemPrompt(userId: string | null, locale: string, page: an
   const memory = await loadMemory(userId);
 
   const localeLine = locale === "bn"
-    ? "User locale: Bangladesh. You may sprinkle warm bhai/apu cues sparingly when natural — never forced."
-    : "User locale: English. Keep tone refined and direct.";
+    ? `LANGUAGE — BANGLA:
+- This customer is in Bangladesh. Reply in natural, conversational Bangla (Bengali script) by default.
+- ALWAYS mirror the customer's language: if they write in English, reply in English; if they write Banglish (Bangla in Latin letters), reply in Banglish; if they write Bangla script, reply in Bangla script.
+- Use warm, respectful local cues (bhai/apu, "ji") sparingly and only when natural — never forced or repetitive.
+- Keep product names, prices (use ৳/Tk), and storefront routes exactly as-is; do not translate slugs or URLs.`
+    : `LANGUAGE:
+- Mirror the customer's language. Default to refined, direct English.
+- If the customer switches to Bangla or Banglish, switch with them immediately.`;
 
   const memLine = memory ? `
 Known about this customer:
