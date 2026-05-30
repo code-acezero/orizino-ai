@@ -246,6 +246,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <motion.div
       ref={cardRef}
       onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseEnter={isMobile ? undefined : handleMouseEnter}
       onMouseLeave={isMobile ? undefined : handleMouseLeave}
       style={isMobile ? {} : {
         rotateX,
