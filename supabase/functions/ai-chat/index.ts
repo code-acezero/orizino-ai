@@ -123,8 +123,7 @@ async function runTool(name: string, args: any, userId: string | null) {
       }
       const { data, error } = await q;
       if (error) return { error: error.message };
-      // Surface a ready-to-render shape including thumbnail + storefront link
-      const products = (data ?? []).map((p: any) => ({
+      const shape = (p: any) => ({
         name: p.name,
         slug: p.slug,
         url: `/product/${p.slug}`,
@@ -133,8 +132,32 @@ async function runTool(name: string, args: any, userId: string | null) {
         thumbnail: p.thumbnail,
         short_description: p.short_description,
         tags: p.tags,
-      }));
-      return { products };
+      });
+      // Surface a ready-to-render shape including thumbnail + storefront link
+      const products = (data ?? []).map(shape);
+
+      // Semantic fallback: a literal keyword search can miss thematic/conceptual
+      // requests (e.g. "anime" should still surface a "Bleach" t-shirt). When the
+      // keyword search finds few/no matches, also hand the model a lightweight
+      // catalog snapshot so it can reason about relatedness itself.
+      let catalog: any[] | undefined;
+      if (args.query && products.length < 3) {
+        const { data: all } = await admin
+          .from("products")
+          .select("id, name, slug, price, compare_at_price, thumbnail, short_description, tags, category_id")
+          .eq("is_active", true)
+          .order("created_at", { ascending: false })
+          .limit(60);
+        const seen = new Set(products.map((p: any) => p.slug));
+        catalog = (all ?? []).filter((p: any) => !seen.has(p.slug)).map(shape);
+      }
+      return catalog && catalog.length
+        ? {
+            products,
+            catalog,
+            note: "Few/no literal keyword matches. The `catalog` lists other active products — pick any that are THEMATICALLY or CONCEPTUALLY related to the request (e.g. a request for 'anime' matches a 'Bleach' or 'Naruto' product because those are anime; 'minimalist' matches plain/clean designs; 'gym' matches activewear). Recommend those related items as if found. Only say nothing matches if truly none are related.",
+          }
+        : { products };
     }
     if (name === "get_order_status") {
       if (!userId) return { error: "Sign in required to view orders." };
@@ -241,7 +264,8 @@ Tools available:
 If the user attached an image, look at it carefully and use search_products to find close matches.
 
 Rules:
-1. Prefer calling a tool over guessing. For vague or misspelled requests, still call search_products — it matches names, slugs, descriptions, and tags fuzzily.
+1. Prefer calling a tool over guessing. For vague, thematic, or misspelled requests, still call search_products — it matches names, slugs, descriptions, and tags fuzzily.
+1b. BE FLEXIBLE & SEMANTIC. Customers describe what they want by theme, vibe, fandom, character, or use-case — not exact product names. If a literal search misses, search_products returns a "catalog" of other active products: read it and recommend any item that is thematically/conceptually related, even when the keyword never appears in the product. Examples: "anime" or "anime theme" → a "Bleach"/"Naruto"/"One Piece" product (those ARE anime); "marvel"/"superhero" → an Iron Man tee; "gym/workout" → activewear; "minimal" → plain designs. Use your own world knowledge to connect names to themes. Only reply that nothing matches when genuinely no product in the catalog relates.
 2. When you present products from search_products, SHOW each one as a markdown image followed by its name (as a link) and price, e.g.:
    ![Product name](thumbnail_url)
    **[Product name](/product/slug)** — ৳price
