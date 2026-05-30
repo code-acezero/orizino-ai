@@ -5,21 +5,33 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+function getServiceRoleKey() {
+  return process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+}
+
+export function getMissingSupabaseAdminEnvVars() {
+  return [
+    ...(!process.env.SUPABASE_URL ? ['SUPABASE_URL'] : []),
+    ...(!getServiceRoleKey() ? ['SERVICE_ROLE_KEY'] : []),
+  ];
+}
+
+export function hasSupabaseAdminCredentials() {
+  return getMissingSupabaseAdminEnvVars().length === 0;
+}
+
 function createSupabaseAdminClient() {
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const SUPABASE_SERVICE_ROLE_KEY = getServiceRoleKey();
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    const missing = [
-      ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
-      ...(!SUPABASE_SERVICE_ROLE_KEY ? ['SUPABASE_SERVICE_ROLE_KEY'] : []),
-    ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
+  const missing = getMissingSupabaseAdminEnvVars();
+  if (missing.length > 0) {
+    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add the missing value in project Secrets.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
 
-  return createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  return createClient<Database>(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
     auth: {
       storage: undefined,
       persistSession: false,
@@ -35,7 +47,7 @@ let _supabaseAdmin: ReturnType<typeof createSupabaseAdminClient> | undefined;
 // Import like: import { supabaseAdmin } from "@/integrations/supabase/client.server";
 export const supabaseAdmin = new Proxy({} as ReturnType<typeof createSupabaseAdminClient>, {
   get(_, prop, receiver) {
-    if (!_supabaseAdmin) _supabaseAdmin = createSupabaseAdminClient();
-    return Reflect.get(_supabaseAdmin, prop, receiver);
+    const client = _supabaseAdmin ??= createSupabaseAdminClient();
+    return Reflect.get(client, prop, receiver);
   },
 });

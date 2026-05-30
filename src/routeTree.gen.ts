@@ -9,38 +9,954 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as OriginRouteImport } from './routes/origin'
+import { Route as AffiliateHubRouteImport } from './routes/affiliate-hub'
+import { Route as MainRouteImport } from './routes/_main'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OriginIndexRouteImport } from './routes/origin/index'
+import { Route as OriginUserPromosRouteImport } from './routes/origin/user-promos'
+import { Route as OriginTrackingRouteImport } from './routes/origin/tracking'
+import { Route as OriginTelegramRouteImport } from './routes/origin/telegram'
+import { Route as OriginSupportRouteImport } from './routes/origin/support'
+import { Route as OriginShowcaseRouteImport } from './routes/origin/showcase'
+import { Route as OriginShippingRouteImport } from './routes/origin/shipping'
+import { Route as OriginSettingsRouteImport } from './routes/origin/settings'
+import { Route as OriginSeoRouteImport } from './routes/origin/seo'
+import { Route as OriginReviewsRouteImport } from './routes/origin/reviews'
+import { Route as OriginReturnsRouteImport } from './routes/origin/returns'
+import { Route as OriginRequestsRouteImport } from './routes/origin/requests'
+import { Route as OriginRecommendationsRouteImport } from './routes/origin/recommendations'
+import { Route as OriginProductsRouteImport } from './routes/origin/products'
+import { Route as OriginPaymentGatewaysRouteImport } from './routes/origin/payment-gateways'
+import { Route as OriginPathaoRouteImport } from './routes/origin/pathao'
+import { Route as OriginOrdersRouteImport } from './routes/origin/orders'
+import { Route as OriginMobileUiRouteImport } from './routes/origin/mobile-ui'
+import { Route as OriginLiveActivityRouteImport } from './routes/origin/live-activity'
+import { Route as OriginLandingRouteImport } from './routes/origin/landing'
+import { Route as OriginHomeRouteImport } from './routes/origin/home'
+import { Route as OriginFooterRouteImport } from './routes/origin/footer'
+import { Route as OriginEmailTemplatesRouteImport } from './routes/origin/email-templates'
+import { Route as OriginEmailSubscribersRouteImport } from './routes/origin/email-subscribers'
+import { Route as OriginEmailProviderRouteImport } from './routes/origin/email-provider'
+import { Route as OriginEmailCampaignsRouteImport } from './routes/origin/email-campaigns'
+import { Route as OriginEmailAutomationsRouteImport } from './routes/origin/email-automations'
+import { Route as OriginDeliveryOffersRouteImport } from './routes/origin/delivery-offers'
+import { Route as OriginDebugRouteImport } from './routes/origin/debug'
+import { Route as OriginDbHealthRouteImport } from './routes/origin/db-health'
+import { Route as OriginCustomersRouteImport } from './routes/origin/customers'
+import { Route as OriginCustomerAnalyticsRouteImport } from './routes/origin/customer-analytics'
+import { Route as OriginCouriersRouteImport } from './routes/origin/couriers'
+import { Route as OriginCourierManagementRouteImport } from './routes/origin/courier-management'
+import { Route as OriginCouponsRouteImport } from './routes/origin/coupons'
+import { Route as OriginCmsPagesRouteImport } from './routes/origin/cms-pages'
+import { Route as OriginCategoriesRouteImport } from './routes/origin/categories'
+import { Route as OriginCallSettingsRouteImport } from './routes/origin/call-settings'
+import { Route as OriginBrandingRouteImport } from './routes/origin/branding'
+import { Route as OriginBannersRouteImport } from './routes/origin/banners'
+import { Route as OriginAppearanceRouteImport } from './routes/origin/appearance'
+import { Route as OriginAnnouncementsRouteImport } from './routes/origin/announcements'
+import { Route as OriginAiSettingsRouteImport } from './routes/origin/ai-settings'
+import { Route as MainWishlistRouteImport } from './routes/_main/wishlist'
+import { Route as MainSupportRouteImport } from './routes/_main/support'
+import { Route as MainShopRouteImport } from './routes/_main/shop'
+import { Route as MainSettingsRouteImport } from './routes/_main/settings'
+import { Route as MainResetPasswordRouteImport } from './routes/_main/reset-password'
+import { Route as MainProfileRouteImport } from './routes/_main/profile'
+import { Route as MainOrdersRouteImport } from './routes/_main/orders'
+import { Route as MainHomeRouteImport } from './routes/_main/home'
+import { Route as MainCheckoutRouteImport } from './routes/_main/checkout'
+import { Route as MainCartRouteImport } from './routes/_main/cart'
+import { Route as MainAuthRouteImport } from './routes/_main/auth'
+import { Route as MainAffiliateRouteImport } from './routes/_main/affiliate'
+import { Route as OriginCorporateIndexRouteImport } from './routes/origin/corporate.index'
+import { Route as OriginEmailCampaignsIdRouteImport } from './routes/origin/email-campaigns.$id'
+import { Route as OriginCorporateStaffRouteImport } from './routes/origin/corporate.staff'
+import { Route as OriginCorporateAuditLogRouteImport } from './routes/origin/corporate.audit-log'
+import { Route as ApiPublicUnsubscribeRouteImport } from './routes/api/public/unsubscribe'
+import { Route as MainProductSlugRouteImport } from './routes/_main/product.$slug'
+import { Route as MainPageSlugRouteImport } from './routes/_main/page.$slug'
+import { Route as MainCategoriesSlugRouteImport } from './routes/_main/categories.$slug'
+import { Route as ApiPublicHooksResendWebhookRouteImport } from './routes/api/public/hooks/resend-webhook'
+import { Route as ApiPublicHooksProcessEmailAutomationsRouteImport } from './routes/api/public/hooks/process-email-automations'
+import { Route as ApiPublicHooksDispatchEmailCampaignsRouteImport } from './routes/api/public/hooks/dispatch-email-campaigns'
+import { Route as ApiPublicHooksAffiliateReportWeeklyRouteImport } from './routes/api/public/hooks/affiliate-report-weekly'
+import { Route as ApiPublicHooksAffiliateReportMonthlyRouteImport } from './routes/api/public/hooks/affiliate-report-monthly'
+import { Route as MainOrdersIdTrackRouteImport } from './routes/_main/orders.$id.track'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OriginRoute = OriginRouteImport.update({
+  id: '/origin',
+  path: '/origin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateHubRoute = AffiliateHubRouteImport.update({
+  id: '/affiliate-hub',
+  path: '/affiliate-hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainRoute = MainRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OriginIndexRoute = OriginIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginUserPromosRoute = OriginUserPromosRouteImport.update({
+  id: '/user-promos',
+  path: '/user-promos',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginTrackingRoute = OriginTrackingRouteImport.update({
+  id: '/tracking',
+  path: '/tracking',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginTelegramRoute = OriginTelegramRouteImport.update({
+  id: '/telegram',
+  path: '/telegram',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginSupportRoute = OriginSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginShowcaseRoute = OriginShowcaseRouteImport.update({
+  id: '/showcase',
+  path: '/showcase',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginShippingRoute = OriginShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginSettingsRoute = OriginSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginSeoRoute = OriginSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginReviewsRoute = OriginReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginReturnsRoute = OriginReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginRequestsRoute = OriginRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginRecommendationsRoute = OriginRecommendationsRouteImport.update({
+  id: '/recommendations',
+  path: '/recommendations',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginProductsRoute = OriginProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginPaymentGatewaysRoute = OriginPaymentGatewaysRouteImport.update({
+  id: '/payment-gateways',
+  path: '/payment-gateways',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginPathaoRoute = OriginPathaoRouteImport.update({
+  id: '/pathao',
+  path: '/pathao',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginOrdersRoute = OriginOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginMobileUiRoute = OriginMobileUiRouteImport.update({
+  id: '/mobile-ui',
+  path: '/mobile-ui',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginLiveActivityRoute = OriginLiveActivityRouteImport.update({
+  id: '/live-activity',
+  path: '/live-activity',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginLandingRoute = OriginLandingRouteImport.update({
+  id: '/landing',
+  path: '/landing',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginHomeRoute = OriginHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginFooterRoute = OriginFooterRouteImport.update({
+  id: '/footer',
+  path: '/footer',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailTemplatesRoute = OriginEmailTemplatesRouteImport.update({
+  id: '/email-templates',
+  path: '/email-templates',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailSubscribersRoute = OriginEmailSubscribersRouteImport.update({
+  id: '/email-subscribers',
+  path: '/email-subscribers',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailProviderRoute = OriginEmailProviderRouteImport.update({
+  id: '/email-provider',
+  path: '/email-provider',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailCampaignsRoute = OriginEmailCampaignsRouteImport.update({
+  id: '/email-campaigns',
+  path: '/email-campaigns',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailAutomationsRoute = OriginEmailAutomationsRouteImport.update({
+  id: '/email-automations',
+  path: '/email-automations',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginDeliveryOffersRoute = OriginDeliveryOffersRouteImport.update({
+  id: '/delivery-offers',
+  path: '/delivery-offers',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginDebugRoute = OriginDebugRouteImport.update({
+  id: '/debug',
+  path: '/debug',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginDbHealthRoute = OriginDbHealthRouteImport.update({
+  id: '/db-health',
+  path: '/db-health',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCustomersRoute = OriginCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCustomerAnalyticsRoute = OriginCustomerAnalyticsRouteImport.update({
+  id: '/customer-analytics',
+  path: '/customer-analytics',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCouriersRoute = OriginCouriersRouteImport.update({
+  id: '/couriers',
+  path: '/couriers',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCourierManagementRoute = OriginCourierManagementRouteImport.update({
+  id: '/courier-management',
+  path: '/courier-management',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCouponsRoute = OriginCouponsRouteImport.update({
+  id: '/coupons',
+  path: '/coupons',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCmsPagesRoute = OriginCmsPagesRouteImport.update({
+  id: '/cms-pages',
+  path: '/cms-pages',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCategoriesRoute = OriginCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCallSettingsRoute = OriginCallSettingsRouteImport.update({
+  id: '/call-settings',
+  path: '/call-settings',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginBrandingRoute = OriginBrandingRouteImport.update({
+  id: '/branding',
+  path: '/branding',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginBannersRoute = OriginBannersRouteImport.update({
+  id: '/banners',
+  path: '/banners',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginAppearanceRoute = OriginAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginAnnouncementsRoute = OriginAnnouncementsRouteImport.update({
+  id: '/announcements',
+  path: '/announcements',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginAiSettingsRoute = OriginAiSettingsRouteImport.update({
+  id: '/ai-settings',
+  path: '/ai-settings',
+  getParentRoute: () => OriginRoute,
+} as any)
+const MainWishlistRoute = MainWishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainSupportRoute = MainSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainShopRoute = MainShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainSettingsRoute = MainSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainResetPasswordRoute = MainResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainProfileRoute = MainProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainOrdersRoute = MainOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainHomeRoute = MainHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainCheckoutRoute = MainCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainCartRoute = MainCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainAuthRoute = MainAuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainAffiliateRoute = MainAffiliateRouteImport.update({
+  id: '/affiliate',
+  path: '/affiliate',
+  getParentRoute: () => MainRoute,
+} as any)
+const OriginCorporateIndexRoute = OriginCorporateIndexRouteImport.update({
+  id: '/corporate/',
+  path: '/corporate/',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginEmailCampaignsIdRoute = OriginEmailCampaignsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => OriginEmailCampaignsRoute,
+} as any)
+const OriginCorporateStaffRoute = OriginCorporateStaffRouteImport.update({
+  id: '/corporate/staff',
+  path: '/corporate/staff',
+  getParentRoute: () => OriginRoute,
+} as any)
+const OriginCorporateAuditLogRoute = OriginCorporateAuditLogRouteImport.update({
+  id: '/corporate/audit-log',
+  path: '/corporate/audit-log',
+  getParentRoute: () => OriginRoute,
+} as any)
+const ApiPublicUnsubscribeRoute = ApiPublicUnsubscribeRouteImport.update({
+  id: '/api/public/unsubscribe',
+  path: '/api/public/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainProductSlugRoute = MainProductSlugRouteImport.update({
+  id: '/product/$slug',
+  path: '/product/$slug',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainPageSlugRoute = MainPageSlugRouteImport.update({
+  id: '/page/$slug',
+  path: '/page/$slug',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainCategoriesSlugRoute = MainCategoriesSlugRouteImport.update({
+  id: '/categories/$slug',
+  path: '/categories/$slug',
+  getParentRoute: () => MainRoute,
+} as any)
+const ApiPublicHooksResendWebhookRoute =
+  ApiPublicHooksResendWebhookRouteImport.update({
+    id: '/api/public/hooks/resend-webhook',
+    path: '/api/public/hooks/resend-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksProcessEmailAutomationsRoute =
+  ApiPublicHooksProcessEmailAutomationsRouteImport.update({
+    id: '/api/public/hooks/process-email-automations',
+    path: '/api/public/hooks/process-email-automations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksDispatchEmailCampaignsRoute =
+  ApiPublicHooksDispatchEmailCampaignsRouteImport.update({
+    id: '/api/public/hooks/dispatch-email-campaigns',
+    path: '/api/public/hooks/dispatch-email-campaigns',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksAffiliateReportWeeklyRoute =
+  ApiPublicHooksAffiliateReportWeeklyRouteImport.update({
+    id: '/api/public/hooks/affiliate-report-weekly',
+    path: '/api/public/hooks/affiliate-report-weekly',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksAffiliateReportMonthlyRoute =
+  ApiPublicHooksAffiliateReportMonthlyRouteImport.update({
+    id: '/api/public/hooks/affiliate-report-monthly',
+    path: '/api/public/hooks/affiliate-report-monthly',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MainOrdersIdTrackRoute = MainOrdersIdTrackRouteImport.update({
+  id: '/$id/track',
+  path: '/$id/track',
+  getParentRoute: () => MainOrdersRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/affiliate-hub': typeof AffiliateHubRoute
+  '/origin': typeof OriginRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/affiliate': typeof MainAffiliateRoute
+  '/auth': typeof MainAuthRoute
+  '/cart': typeof MainCartRoute
+  '/checkout': typeof MainCheckoutRoute
+  '/home': typeof MainHomeRoute
+  '/orders': typeof MainOrdersRouteWithChildren
+  '/profile': typeof MainProfileRoute
+  '/reset-password': typeof MainResetPasswordRoute
+  '/settings': typeof MainSettingsRoute
+  '/shop': typeof MainShopRoute
+  '/support': typeof MainSupportRoute
+  '/wishlist': typeof MainWishlistRoute
+  '/origin/ai-settings': typeof OriginAiSettingsRoute
+  '/origin/announcements': typeof OriginAnnouncementsRoute
+  '/origin/appearance': typeof OriginAppearanceRoute
+  '/origin/banners': typeof OriginBannersRoute
+  '/origin/branding': typeof OriginBrandingRoute
+  '/origin/call-settings': typeof OriginCallSettingsRoute
+  '/origin/categories': typeof OriginCategoriesRoute
+  '/origin/cms-pages': typeof OriginCmsPagesRoute
+  '/origin/coupons': typeof OriginCouponsRoute
+  '/origin/courier-management': typeof OriginCourierManagementRoute
+  '/origin/couriers': typeof OriginCouriersRoute
+  '/origin/customer-analytics': typeof OriginCustomerAnalyticsRoute
+  '/origin/customers': typeof OriginCustomersRoute
+  '/origin/db-health': typeof OriginDbHealthRoute
+  '/origin/debug': typeof OriginDebugRoute
+  '/origin/delivery-offers': typeof OriginDeliveryOffersRoute
+  '/origin/email-automations': typeof OriginEmailAutomationsRoute
+  '/origin/email-campaigns': typeof OriginEmailCampaignsRouteWithChildren
+  '/origin/email-provider': typeof OriginEmailProviderRoute
+  '/origin/email-subscribers': typeof OriginEmailSubscribersRoute
+  '/origin/email-templates': typeof OriginEmailTemplatesRoute
+  '/origin/footer': typeof OriginFooterRoute
+  '/origin/home': typeof OriginHomeRoute
+  '/origin/landing': typeof OriginLandingRoute
+  '/origin/live-activity': typeof OriginLiveActivityRoute
+  '/origin/mobile-ui': typeof OriginMobileUiRoute
+  '/origin/orders': typeof OriginOrdersRoute
+  '/origin/pathao': typeof OriginPathaoRoute
+  '/origin/payment-gateways': typeof OriginPaymentGatewaysRoute
+  '/origin/products': typeof OriginProductsRoute
+  '/origin/recommendations': typeof OriginRecommendationsRoute
+  '/origin/requests': typeof OriginRequestsRoute
+  '/origin/returns': typeof OriginReturnsRoute
+  '/origin/reviews': typeof OriginReviewsRoute
+  '/origin/seo': typeof OriginSeoRoute
+  '/origin/settings': typeof OriginSettingsRoute
+  '/origin/shipping': typeof OriginShippingRoute
+  '/origin/showcase': typeof OriginShowcaseRoute
+  '/origin/support': typeof OriginSupportRoute
+  '/origin/telegram': typeof OriginTelegramRoute
+  '/origin/tracking': typeof OriginTrackingRoute
+  '/origin/user-promos': typeof OriginUserPromosRoute
+  '/origin/': typeof OriginIndexRoute
+  '/categories/$slug': typeof MainCategoriesSlugRoute
+  '/page/$slug': typeof MainPageSlugRoute
+  '/product/$slug': typeof MainProductSlugRoute
+  '/api/public/unsubscribe': typeof ApiPublicUnsubscribeRoute
+  '/origin/corporate/audit-log': typeof OriginCorporateAuditLogRoute
+  '/origin/corporate/staff': typeof OriginCorporateStaffRoute
+  '/origin/email-campaigns/$id': typeof OriginEmailCampaignsIdRoute
+  '/origin/corporate/': typeof OriginCorporateIndexRoute
+  '/orders/$id/track': typeof MainOrdersIdTrackRoute
+  '/api/public/hooks/affiliate-report-monthly': typeof ApiPublicHooksAffiliateReportMonthlyRoute
+  '/api/public/hooks/affiliate-report-weekly': typeof ApiPublicHooksAffiliateReportWeeklyRoute
+  '/api/public/hooks/dispatch-email-campaigns': typeof ApiPublicHooksDispatchEmailCampaignsRoute
+  '/api/public/hooks/process-email-automations': typeof ApiPublicHooksProcessEmailAutomationsRoute
+  '/api/public/hooks/resend-webhook': typeof ApiPublicHooksResendWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/affiliate-hub': typeof AffiliateHubRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/affiliate': typeof MainAffiliateRoute
+  '/auth': typeof MainAuthRoute
+  '/cart': typeof MainCartRoute
+  '/checkout': typeof MainCheckoutRoute
+  '/home': typeof MainHomeRoute
+  '/orders': typeof MainOrdersRouteWithChildren
+  '/profile': typeof MainProfileRoute
+  '/reset-password': typeof MainResetPasswordRoute
+  '/settings': typeof MainSettingsRoute
+  '/shop': typeof MainShopRoute
+  '/support': typeof MainSupportRoute
+  '/wishlist': typeof MainWishlistRoute
+  '/origin/ai-settings': typeof OriginAiSettingsRoute
+  '/origin/announcements': typeof OriginAnnouncementsRoute
+  '/origin/appearance': typeof OriginAppearanceRoute
+  '/origin/banners': typeof OriginBannersRoute
+  '/origin/branding': typeof OriginBrandingRoute
+  '/origin/call-settings': typeof OriginCallSettingsRoute
+  '/origin/categories': typeof OriginCategoriesRoute
+  '/origin/cms-pages': typeof OriginCmsPagesRoute
+  '/origin/coupons': typeof OriginCouponsRoute
+  '/origin/courier-management': typeof OriginCourierManagementRoute
+  '/origin/couriers': typeof OriginCouriersRoute
+  '/origin/customer-analytics': typeof OriginCustomerAnalyticsRoute
+  '/origin/customers': typeof OriginCustomersRoute
+  '/origin/db-health': typeof OriginDbHealthRoute
+  '/origin/debug': typeof OriginDebugRoute
+  '/origin/delivery-offers': typeof OriginDeliveryOffersRoute
+  '/origin/email-automations': typeof OriginEmailAutomationsRoute
+  '/origin/email-campaigns': typeof OriginEmailCampaignsRouteWithChildren
+  '/origin/email-provider': typeof OriginEmailProviderRoute
+  '/origin/email-subscribers': typeof OriginEmailSubscribersRoute
+  '/origin/email-templates': typeof OriginEmailTemplatesRoute
+  '/origin/footer': typeof OriginFooterRoute
+  '/origin/home': typeof OriginHomeRoute
+  '/origin/landing': typeof OriginLandingRoute
+  '/origin/live-activity': typeof OriginLiveActivityRoute
+  '/origin/mobile-ui': typeof OriginMobileUiRoute
+  '/origin/orders': typeof OriginOrdersRoute
+  '/origin/pathao': typeof OriginPathaoRoute
+  '/origin/payment-gateways': typeof OriginPaymentGatewaysRoute
+  '/origin/products': typeof OriginProductsRoute
+  '/origin/recommendations': typeof OriginRecommendationsRoute
+  '/origin/requests': typeof OriginRequestsRoute
+  '/origin/returns': typeof OriginReturnsRoute
+  '/origin/reviews': typeof OriginReviewsRoute
+  '/origin/seo': typeof OriginSeoRoute
+  '/origin/settings': typeof OriginSettingsRoute
+  '/origin/shipping': typeof OriginShippingRoute
+  '/origin/showcase': typeof OriginShowcaseRoute
+  '/origin/support': typeof OriginSupportRoute
+  '/origin/telegram': typeof OriginTelegramRoute
+  '/origin/tracking': typeof OriginTrackingRoute
+  '/origin/user-promos': typeof OriginUserPromosRoute
+  '/origin': typeof OriginIndexRoute
+  '/categories/$slug': typeof MainCategoriesSlugRoute
+  '/page/$slug': typeof MainPageSlugRoute
+  '/product/$slug': typeof MainProductSlugRoute
+  '/api/public/unsubscribe': typeof ApiPublicUnsubscribeRoute
+  '/origin/corporate/audit-log': typeof OriginCorporateAuditLogRoute
+  '/origin/corporate/staff': typeof OriginCorporateStaffRoute
+  '/origin/email-campaigns/$id': typeof OriginEmailCampaignsIdRoute
+  '/origin/corporate': typeof OriginCorporateIndexRoute
+  '/orders/$id/track': typeof MainOrdersIdTrackRoute
+  '/api/public/hooks/affiliate-report-monthly': typeof ApiPublicHooksAffiliateReportMonthlyRoute
+  '/api/public/hooks/affiliate-report-weekly': typeof ApiPublicHooksAffiliateReportWeeklyRoute
+  '/api/public/hooks/dispatch-email-campaigns': typeof ApiPublicHooksDispatchEmailCampaignsRoute
+  '/api/public/hooks/process-email-automations': typeof ApiPublicHooksProcessEmailAutomationsRoute
+  '/api/public/hooks/resend-webhook': typeof ApiPublicHooksResendWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_main': typeof MainRouteWithChildren
+  '/affiliate-hub': typeof AffiliateHubRoute
+  '/origin': typeof OriginRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_main/affiliate': typeof MainAffiliateRoute
+  '/_main/auth': typeof MainAuthRoute
+  '/_main/cart': typeof MainCartRoute
+  '/_main/checkout': typeof MainCheckoutRoute
+  '/_main/home': typeof MainHomeRoute
+  '/_main/orders': typeof MainOrdersRouteWithChildren
+  '/_main/profile': typeof MainProfileRoute
+  '/_main/reset-password': typeof MainResetPasswordRoute
+  '/_main/settings': typeof MainSettingsRoute
+  '/_main/shop': typeof MainShopRoute
+  '/_main/support': typeof MainSupportRoute
+  '/_main/wishlist': typeof MainWishlistRoute
+  '/origin/ai-settings': typeof OriginAiSettingsRoute
+  '/origin/announcements': typeof OriginAnnouncementsRoute
+  '/origin/appearance': typeof OriginAppearanceRoute
+  '/origin/banners': typeof OriginBannersRoute
+  '/origin/branding': typeof OriginBrandingRoute
+  '/origin/call-settings': typeof OriginCallSettingsRoute
+  '/origin/categories': typeof OriginCategoriesRoute
+  '/origin/cms-pages': typeof OriginCmsPagesRoute
+  '/origin/coupons': typeof OriginCouponsRoute
+  '/origin/courier-management': typeof OriginCourierManagementRoute
+  '/origin/couriers': typeof OriginCouriersRoute
+  '/origin/customer-analytics': typeof OriginCustomerAnalyticsRoute
+  '/origin/customers': typeof OriginCustomersRoute
+  '/origin/db-health': typeof OriginDbHealthRoute
+  '/origin/debug': typeof OriginDebugRoute
+  '/origin/delivery-offers': typeof OriginDeliveryOffersRoute
+  '/origin/email-automations': typeof OriginEmailAutomationsRoute
+  '/origin/email-campaigns': typeof OriginEmailCampaignsRouteWithChildren
+  '/origin/email-provider': typeof OriginEmailProviderRoute
+  '/origin/email-subscribers': typeof OriginEmailSubscribersRoute
+  '/origin/email-templates': typeof OriginEmailTemplatesRoute
+  '/origin/footer': typeof OriginFooterRoute
+  '/origin/home': typeof OriginHomeRoute
+  '/origin/landing': typeof OriginLandingRoute
+  '/origin/live-activity': typeof OriginLiveActivityRoute
+  '/origin/mobile-ui': typeof OriginMobileUiRoute
+  '/origin/orders': typeof OriginOrdersRoute
+  '/origin/pathao': typeof OriginPathaoRoute
+  '/origin/payment-gateways': typeof OriginPaymentGatewaysRoute
+  '/origin/products': typeof OriginProductsRoute
+  '/origin/recommendations': typeof OriginRecommendationsRoute
+  '/origin/requests': typeof OriginRequestsRoute
+  '/origin/returns': typeof OriginReturnsRoute
+  '/origin/reviews': typeof OriginReviewsRoute
+  '/origin/seo': typeof OriginSeoRoute
+  '/origin/settings': typeof OriginSettingsRoute
+  '/origin/shipping': typeof OriginShippingRoute
+  '/origin/showcase': typeof OriginShowcaseRoute
+  '/origin/support': typeof OriginSupportRoute
+  '/origin/telegram': typeof OriginTelegramRoute
+  '/origin/tracking': typeof OriginTrackingRoute
+  '/origin/user-promos': typeof OriginUserPromosRoute
+  '/origin/': typeof OriginIndexRoute
+  '/_main/categories/$slug': typeof MainCategoriesSlugRoute
+  '/_main/page/$slug': typeof MainPageSlugRoute
+  '/_main/product/$slug': typeof MainProductSlugRoute
+  '/api/public/unsubscribe': typeof ApiPublicUnsubscribeRoute
+  '/origin/corporate/audit-log': typeof OriginCorporateAuditLogRoute
+  '/origin/corporate/staff': typeof OriginCorporateStaffRoute
+  '/origin/email-campaigns/$id': typeof OriginEmailCampaignsIdRoute
+  '/origin/corporate/': typeof OriginCorporateIndexRoute
+  '/_main/orders/$id/track': typeof MainOrdersIdTrackRoute
+  '/api/public/hooks/affiliate-report-monthly': typeof ApiPublicHooksAffiliateReportMonthlyRoute
+  '/api/public/hooks/affiliate-report-weekly': typeof ApiPublicHooksAffiliateReportWeeklyRoute
+  '/api/public/hooks/dispatch-email-campaigns': typeof ApiPublicHooksDispatchEmailCampaignsRoute
+  '/api/public/hooks/process-email-automations': typeof ApiPublicHooksProcessEmailAutomationsRoute
+  '/api/public/hooks/resend-webhook': typeof ApiPublicHooksResendWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/affiliate-hub'
+    | '/origin'
+    | '/sitemap.xml'
+    | '/affiliate'
+    | '/auth'
+    | '/cart'
+    | '/checkout'
+    | '/home'
+    | '/orders'
+    | '/profile'
+    | '/reset-password'
+    | '/settings'
+    | '/shop'
+    | '/support'
+    | '/wishlist'
+    | '/origin/ai-settings'
+    | '/origin/announcements'
+    | '/origin/appearance'
+    | '/origin/banners'
+    | '/origin/branding'
+    | '/origin/call-settings'
+    | '/origin/categories'
+    | '/origin/cms-pages'
+    | '/origin/coupons'
+    | '/origin/courier-management'
+    | '/origin/couriers'
+    | '/origin/customer-analytics'
+    | '/origin/customers'
+    | '/origin/db-health'
+    | '/origin/debug'
+    | '/origin/delivery-offers'
+    | '/origin/email-automations'
+    | '/origin/email-campaigns'
+    | '/origin/email-provider'
+    | '/origin/email-subscribers'
+    | '/origin/email-templates'
+    | '/origin/footer'
+    | '/origin/home'
+    | '/origin/landing'
+    | '/origin/live-activity'
+    | '/origin/mobile-ui'
+    | '/origin/orders'
+    | '/origin/pathao'
+    | '/origin/payment-gateways'
+    | '/origin/products'
+    | '/origin/recommendations'
+    | '/origin/requests'
+    | '/origin/returns'
+    | '/origin/reviews'
+    | '/origin/seo'
+    | '/origin/settings'
+    | '/origin/shipping'
+    | '/origin/showcase'
+    | '/origin/support'
+    | '/origin/telegram'
+    | '/origin/tracking'
+    | '/origin/user-promos'
+    | '/origin/'
+    | '/categories/$slug'
+    | '/page/$slug'
+    | '/product/$slug'
+    | '/api/public/unsubscribe'
+    | '/origin/corporate/audit-log'
+    | '/origin/corporate/staff'
+    | '/origin/email-campaigns/$id'
+    | '/origin/corporate/'
+    | '/orders/$id/track'
+    | '/api/public/hooks/affiliate-report-monthly'
+    | '/api/public/hooks/affiliate-report-weekly'
+    | '/api/public/hooks/dispatch-email-campaigns'
+    | '/api/public/hooks/process-email-automations'
+    | '/api/public/hooks/resend-webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/affiliate-hub'
+    | '/sitemap.xml'
+    | '/affiliate'
+    | '/auth'
+    | '/cart'
+    | '/checkout'
+    | '/home'
+    | '/orders'
+    | '/profile'
+    | '/reset-password'
+    | '/settings'
+    | '/shop'
+    | '/support'
+    | '/wishlist'
+    | '/origin/ai-settings'
+    | '/origin/announcements'
+    | '/origin/appearance'
+    | '/origin/banners'
+    | '/origin/branding'
+    | '/origin/call-settings'
+    | '/origin/categories'
+    | '/origin/cms-pages'
+    | '/origin/coupons'
+    | '/origin/courier-management'
+    | '/origin/couriers'
+    | '/origin/customer-analytics'
+    | '/origin/customers'
+    | '/origin/db-health'
+    | '/origin/debug'
+    | '/origin/delivery-offers'
+    | '/origin/email-automations'
+    | '/origin/email-campaigns'
+    | '/origin/email-provider'
+    | '/origin/email-subscribers'
+    | '/origin/email-templates'
+    | '/origin/footer'
+    | '/origin/home'
+    | '/origin/landing'
+    | '/origin/live-activity'
+    | '/origin/mobile-ui'
+    | '/origin/orders'
+    | '/origin/pathao'
+    | '/origin/payment-gateways'
+    | '/origin/products'
+    | '/origin/recommendations'
+    | '/origin/requests'
+    | '/origin/returns'
+    | '/origin/reviews'
+    | '/origin/seo'
+    | '/origin/settings'
+    | '/origin/shipping'
+    | '/origin/showcase'
+    | '/origin/support'
+    | '/origin/telegram'
+    | '/origin/tracking'
+    | '/origin/user-promos'
+    | '/origin'
+    | '/categories/$slug'
+    | '/page/$slug'
+    | '/product/$slug'
+    | '/api/public/unsubscribe'
+    | '/origin/corporate/audit-log'
+    | '/origin/corporate/staff'
+    | '/origin/email-campaigns/$id'
+    | '/origin/corporate'
+    | '/orders/$id/track'
+    | '/api/public/hooks/affiliate-report-monthly'
+    | '/api/public/hooks/affiliate-report-weekly'
+    | '/api/public/hooks/dispatch-email-campaigns'
+    | '/api/public/hooks/process-email-automations'
+    | '/api/public/hooks/resend-webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/_main'
+    | '/affiliate-hub'
+    | '/origin'
+    | '/sitemap.xml'
+    | '/_main/affiliate'
+    | '/_main/auth'
+    | '/_main/cart'
+    | '/_main/checkout'
+    | '/_main/home'
+    | '/_main/orders'
+    | '/_main/profile'
+    | '/_main/reset-password'
+    | '/_main/settings'
+    | '/_main/shop'
+    | '/_main/support'
+    | '/_main/wishlist'
+    | '/origin/ai-settings'
+    | '/origin/announcements'
+    | '/origin/appearance'
+    | '/origin/banners'
+    | '/origin/branding'
+    | '/origin/call-settings'
+    | '/origin/categories'
+    | '/origin/cms-pages'
+    | '/origin/coupons'
+    | '/origin/courier-management'
+    | '/origin/couriers'
+    | '/origin/customer-analytics'
+    | '/origin/customers'
+    | '/origin/db-health'
+    | '/origin/debug'
+    | '/origin/delivery-offers'
+    | '/origin/email-automations'
+    | '/origin/email-campaigns'
+    | '/origin/email-provider'
+    | '/origin/email-subscribers'
+    | '/origin/email-templates'
+    | '/origin/footer'
+    | '/origin/home'
+    | '/origin/landing'
+    | '/origin/live-activity'
+    | '/origin/mobile-ui'
+    | '/origin/orders'
+    | '/origin/pathao'
+    | '/origin/payment-gateways'
+    | '/origin/products'
+    | '/origin/recommendations'
+    | '/origin/requests'
+    | '/origin/returns'
+    | '/origin/reviews'
+    | '/origin/seo'
+    | '/origin/settings'
+    | '/origin/shipping'
+    | '/origin/showcase'
+    | '/origin/support'
+    | '/origin/telegram'
+    | '/origin/tracking'
+    | '/origin/user-promos'
+    | '/origin/'
+    | '/_main/categories/$slug'
+    | '/_main/page/$slug'
+    | '/_main/product/$slug'
+    | '/api/public/unsubscribe'
+    | '/origin/corporate/audit-log'
+    | '/origin/corporate/staff'
+    | '/origin/email-campaigns/$id'
+    | '/origin/corporate/'
+    | '/_main/orders/$id/track'
+    | '/api/public/hooks/affiliate-report-monthly'
+    | '/api/public/hooks/affiliate-report-weekly'
+    | '/api/public/hooks/dispatch-email-campaigns'
+    | '/api/public/hooks/process-email-automations'
+    | '/api/public/hooks/resend-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MainRoute: typeof MainRouteWithChildren
+  AffiliateHubRoute: typeof AffiliateHubRoute
+  OriginRoute: typeof OriginRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiPublicUnsubscribeRoute: typeof ApiPublicUnsubscribeRoute
+  ApiPublicHooksAffiliateReportMonthlyRoute: typeof ApiPublicHooksAffiliateReportMonthlyRoute
+  ApiPublicHooksAffiliateReportWeeklyRoute: typeof ApiPublicHooksAffiliateReportWeeklyRoute
+  ApiPublicHooksDispatchEmailCampaignsRoute: typeof ApiPublicHooksDispatchEmailCampaignsRoute
+  ApiPublicHooksProcessEmailAutomationsRoute: typeof ApiPublicHooksProcessEmailAutomationsRoute
+  ApiPublicHooksResendWebhookRoute: typeof ApiPublicHooksResendWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/origin': {
+      id: '/origin'
+      path: '/origin'
+      fullPath: '/origin'
+      preLoaderRoute: typeof OriginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-hub': {
+      id: '/affiliate-hub'
+      path: '/affiliate-hub'
+      fullPath: '/affiliate-hub'
+      preLoaderRoute: typeof AffiliateHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +964,670 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/origin/': {
+      id: '/origin/'
+      path: '/'
+      fullPath: '/origin/'
+      preLoaderRoute: typeof OriginIndexRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/user-promos': {
+      id: '/origin/user-promos'
+      path: '/user-promos'
+      fullPath: '/origin/user-promos'
+      preLoaderRoute: typeof OriginUserPromosRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/tracking': {
+      id: '/origin/tracking'
+      path: '/tracking'
+      fullPath: '/origin/tracking'
+      preLoaderRoute: typeof OriginTrackingRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/telegram': {
+      id: '/origin/telegram'
+      path: '/telegram'
+      fullPath: '/origin/telegram'
+      preLoaderRoute: typeof OriginTelegramRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/support': {
+      id: '/origin/support'
+      path: '/support'
+      fullPath: '/origin/support'
+      preLoaderRoute: typeof OriginSupportRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/showcase': {
+      id: '/origin/showcase'
+      path: '/showcase'
+      fullPath: '/origin/showcase'
+      preLoaderRoute: typeof OriginShowcaseRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/shipping': {
+      id: '/origin/shipping'
+      path: '/shipping'
+      fullPath: '/origin/shipping'
+      preLoaderRoute: typeof OriginShippingRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/settings': {
+      id: '/origin/settings'
+      path: '/settings'
+      fullPath: '/origin/settings'
+      preLoaderRoute: typeof OriginSettingsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/seo': {
+      id: '/origin/seo'
+      path: '/seo'
+      fullPath: '/origin/seo'
+      preLoaderRoute: typeof OriginSeoRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/reviews': {
+      id: '/origin/reviews'
+      path: '/reviews'
+      fullPath: '/origin/reviews'
+      preLoaderRoute: typeof OriginReviewsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/returns': {
+      id: '/origin/returns'
+      path: '/returns'
+      fullPath: '/origin/returns'
+      preLoaderRoute: typeof OriginReturnsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/requests': {
+      id: '/origin/requests'
+      path: '/requests'
+      fullPath: '/origin/requests'
+      preLoaderRoute: typeof OriginRequestsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/recommendations': {
+      id: '/origin/recommendations'
+      path: '/recommendations'
+      fullPath: '/origin/recommendations'
+      preLoaderRoute: typeof OriginRecommendationsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/products': {
+      id: '/origin/products'
+      path: '/products'
+      fullPath: '/origin/products'
+      preLoaderRoute: typeof OriginProductsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/payment-gateways': {
+      id: '/origin/payment-gateways'
+      path: '/payment-gateways'
+      fullPath: '/origin/payment-gateways'
+      preLoaderRoute: typeof OriginPaymentGatewaysRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/pathao': {
+      id: '/origin/pathao'
+      path: '/pathao'
+      fullPath: '/origin/pathao'
+      preLoaderRoute: typeof OriginPathaoRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/orders': {
+      id: '/origin/orders'
+      path: '/orders'
+      fullPath: '/origin/orders'
+      preLoaderRoute: typeof OriginOrdersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/mobile-ui': {
+      id: '/origin/mobile-ui'
+      path: '/mobile-ui'
+      fullPath: '/origin/mobile-ui'
+      preLoaderRoute: typeof OriginMobileUiRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/live-activity': {
+      id: '/origin/live-activity'
+      path: '/live-activity'
+      fullPath: '/origin/live-activity'
+      preLoaderRoute: typeof OriginLiveActivityRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/landing': {
+      id: '/origin/landing'
+      path: '/landing'
+      fullPath: '/origin/landing'
+      preLoaderRoute: typeof OriginLandingRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/home': {
+      id: '/origin/home'
+      path: '/home'
+      fullPath: '/origin/home'
+      preLoaderRoute: typeof OriginHomeRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/footer': {
+      id: '/origin/footer'
+      path: '/footer'
+      fullPath: '/origin/footer'
+      preLoaderRoute: typeof OriginFooterRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-templates': {
+      id: '/origin/email-templates'
+      path: '/email-templates'
+      fullPath: '/origin/email-templates'
+      preLoaderRoute: typeof OriginEmailTemplatesRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-subscribers': {
+      id: '/origin/email-subscribers'
+      path: '/email-subscribers'
+      fullPath: '/origin/email-subscribers'
+      preLoaderRoute: typeof OriginEmailSubscribersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-provider': {
+      id: '/origin/email-provider'
+      path: '/email-provider'
+      fullPath: '/origin/email-provider'
+      preLoaderRoute: typeof OriginEmailProviderRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-campaigns': {
+      id: '/origin/email-campaigns'
+      path: '/email-campaigns'
+      fullPath: '/origin/email-campaigns'
+      preLoaderRoute: typeof OriginEmailCampaignsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-automations': {
+      id: '/origin/email-automations'
+      path: '/email-automations'
+      fullPath: '/origin/email-automations'
+      preLoaderRoute: typeof OriginEmailAutomationsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/delivery-offers': {
+      id: '/origin/delivery-offers'
+      path: '/delivery-offers'
+      fullPath: '/origin/delivery-offers'
+      preLoaderRoute: typeof OriginDeliveryOffersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/debug': {
+      id: '/origin/debug'
+      path: '/debug'
+      fullPath: '/origin/debug'
+      preLoaderRoute: typeof OriginDebugRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/db-health': {
+      id: '/origin/db-health'
+      path: '/db-health'
+      fullPath: '/origin/db-health'
+      preLoaderRoute: typeof OriginDbHealthRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/customers': {
+      id: '/origin/customers'
+      path: '/customers'
+      fullPath: '/origin/customers'
+      preLoaderRoute: typeof OriginCustomersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/customer-analytics': {
+      id: '/origin/customer-analytics'
+      path: '/customer-analytics'
+      fullPath: '/origin/customer-analytics'
+      preLoaderRoute: typeof OriginCustomerAnalyticsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/couriers': {
+      id: '/origin/couriers'
+      path: '/couriers'
+      fullPath: '/origin/couriers'
+      preLoaderRoute: typeof OriginCouriersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/courier-management': {
+      id: '/origin/courier-management'
+      path: '/courier-management'
+      fullPath: '/origin/courier-management'
+      preLoaderRoute: typeof OriginCourierManagementRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/coupons': {
+      id: '/origin/coupons'
+      path: '/coupons'
+      fullPath: '/origin/coupons'
+      preLoaderRoute: typeof OriginCouponsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/cms-pages': {
+      id: '/origin/cms-pages'
+      path: '/cms-pages'
+      fullPath: '/origin/cms-pages'
+      preLoaderRoute: typeof OriginCmsPagesRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/categories': {
+      id: '/origin/categories'
+      path: '/categories'
+      fullPath: '/origin/categories'
+      preLoaderRoute: typeof OriginCategoriesRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/call-settings': {
+      id: '/origin/call-settings'
+      path: '/call-settings'
+      fullPath: '/origin/call-settings'
+      preLoaderRoute: typeof OriginCallSettingsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/branding': {
+      id: '/origin/branding'
+      path: '/branding'
+      fullPath: '/origin/branding'
+      preLoaderRoute: typeof OriginBrandingRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/banners': {
+      id: '/origin/banners'
+      path: '/banners'
+      fullPath: '/origin/banners'
+      preLoaderRoute: typeof OriginBannersRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/appearance': {
+      id: '/origin/appearance'
+      path: '/appearance'
+      fullPath: '/origin/appearance'
+      preLoaderRoute: typeof OriginAppearanceRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/announcements': {
+      id: '/origin/announcements'
+      path: '/announcements'
+      fullPath: '/origin/announcements'
+      preLoaderRoute: typeof OriginAnnouncementsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/ai-settings': {
+      id: '/origin/ai-settings'
+      path: '/ai-settings'
+      fullPath: '/origin/ai-settings'
+      preLoaderRoute: typeof OriginAiSettingsRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/_main/wishlist': {
+      id: '/_main/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof MainWishlistRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/support': {
+      id: '/_main/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof MainSupportRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/shop': {
+      id: '/_main/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof MainShopRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/settings': {
+      id: '/_main/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainSettingsRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reset-password': {
+      id: '/_main/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof MainResetPasswordRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/profile': {
+      id: '/_main/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof MainProfileRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/orders': {
+      id: '/_main/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof MainOrdersRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/home': {
+      id: '/_main/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof MainHomeRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/checkout': {
+      id: '/_main/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof MainCheckoutRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/cart': {
+      id: '/_main/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof MainCartRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/auth': {
+      id: '/_main/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof MainAuthRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/affiliate': {
+      id: '/_main/affiliate'
+      path: '/affiliate'
+      fullPath: '/affiliate'
+      preLoaderRoute: typeof MainAffiliateRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/origin/corporate/': {
+      id: '/origin/corporate/'
+      path: '/corporate'
+      fullPath: '/origin/corporate/'
+      preLoaderRoute: typeof OriginCorporateIndexRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/email-campaigns/$id': {
+      id: '/origin/email-campaigns/$id'
+      path: '/$id'
+      fullPath: '/origin/email-campaigns/$id'
+      preLoaderRoute: typeof OriginEmailCampaignsIdRouteImport
+      parentRoute: typeof OriginEmailCampaignsRoute
+    }
+    '/origin/corporate/staff': {
+      id: '/origin/corporate/staff'
+      path: '/corporate/staff'
+      fullPath: '/origin/corporate/staff'
+      preLoaderRoute: typeof OriginCorporateStaffRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/origin/corporate/audit-log': {
+      id: '/origin/corporate/audit-log'
+      path: '/corporate/audit-log'
+      fullPath: '/origin/corporate/audit-log'
+      preLoaderRoute: typeof OriginCorporateAuditLogRouteImport
+      parentRoute: typeof OriginRoute
+    }
+    '/api/public/unsubscribe': {
+      id: '/api/public/unsubscribe'
+      path: '/api/public/unsubscribe'
+      fullPath: '/api/public/unsubscribe'
+      preLoaderRoute: typeof ApiPublicUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/product/$slug': {
+      id: '/_main/product/$slug'
+      path: '/product/$slug'
+      fullPath: '/product/$slug'
+      preLoaderRoute: typeof MainProductSlugRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/page/$slug': {
+      id: '/_main/page/$slug'
+      path: '/page/$slug'
+      fullPath: '/page/$slug'
+      preLoaderRoute: typeof MainPageSlugRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/categories/$slug': {
+      id: '/_main/categories/$slug'
+      path: '/categories/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof MainCategoriesSlugRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/api/public/hooks/resend-webhook': {
+      id: '/api/public/hooks/resend-webhook'
+      path: '/api/public/hooks/resend-webhook'
+      fullPath: '/api/public/hooks/resend-webhook'
+      preLoaderRoute: typeof ApiPublicHooksResendWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/process-email-automations': {
+      id: '/api/public/hooks/process-email-automations'
+      path: '/api/public/hooks/process-email-automations'
+      fullPath: '/api/public/hooks/process-email-automations'
+      preLoaderRoute: typeof ApiPublicHooksProcessEmailAutomationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/dispatch-email-campaigns': {
+      id: '/api/public/hooks/dispatch-email-campaigns'
+      path: '/api/public/hooks/dispatch-email-campaigns'
+      fullPath: '/api/public/hooks/dispatch-email-campaigns'
+      preLoaderRoute: typeof ApiPublicHooksDispatchEmailCampaignsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/affiliate-report-weekly': {
+      id: '/api/public/hooks/affiliate-report-weekly'
+      path: '/api/public/hooks/affiliate-report-weekly'
+      fullPath: '/api/public/hooks/affiliate-report-weekly'
+      preLoaderRoute: typeof ApiPublicHooksAffiliateReportWeeklyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/affiliate-report-monthly': {
+      id: '/api/public/hooks/affiliate-report-monthly'
+      path: '/api/public/hooks/affiliate-report-monthly'
+      fullPath: '/api/public/hooks/affiliate-report-monthly'
+      preLoaderRoute: typeof ApiPublicHooksAffiliateReportMonthlyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/orders/$id/track': {
+      id: '/_main/orders/$id/track'
+      path: '/$id/track'
+      fullPath: '/orders/$id/track'
+      preLoaderRoute: typeof MainOrdersIdTrackRouteImport
+      parentRoute: typeof MainOrdersRoute
+    }
   }
 }
 
+interface MainOrdersRouteChildren {
+  MainOrdersIdTrackRoute: typeof MainOrdersIdTrackRoute
+}
+
+const MainOrdersRouteChildren: MainOrdersRouteChildren = {
+  MainOrdersIdTrackRoute: MainOrdersIdTrackRoute,
+}
+
+const MainOrdersRouteWithChildren = MainOrdersRoute._addFileChildren(
+  MainOrdersRouteChildren,
+)
+
+interface MainRouteChildren {
+  MainAffiliateRoute: typeof MainAffiliateRoute
+  MainAuthRoute: typeof MainAuthRoute
+  MainCartRoute: typeof MainCartRoute
+  MainCheckoutRoute: typeof MainCheckoutRoute
+  MainHomeRoute: typeof MainHomeRoute
+  MainOrdersRoute: typeof MainOrdersRouteWithChildren
+  MainProfileRoute: typeof MainProfileRoute
+  MainResetPasswordRoute: typeof MainResetPasswordRoute
+  MainSettingsRoute: typeof MainSettingsRoute
+  MainShopRoute: typeof MainShopRoute
+  MainSupportRoute: typeof MainSupportRoute
+  MainWishlistRoute: typeof MainWishlistRoute
+  MainCategoriesSlugRoute: typeof MainCategoriesSlugRoute
+  MainPageSlugRoute: typeof MainPageSlugRoute
+  MainProductSlugRoute: typeof MainProductSlugRoute
+}
+
+const MainRouteChildren: MainRouteChildren = {
+  MainAffiliateRoute: MainAffiliateRoute,
+  MainAuthRoute: MainAuthRoute,
+  MainCartRoute: MainCartRoute,
+  MainCheckoutRoute: MainCheckoutRoute,
+  MainHomeRoute: MainHomeRoute,
+  MainOrdersRoute: MainOrdersRouteWithChildren,
+  MainProfileRoute: MainProfileRoute,
+  MainResetPasswordRoute: MainResetPasswordRoute,
+  MainSettingsRoute: MainSettingsRoute,
+  MainShopRoute: MainShopRoute,
+  MainSupportRoute: MainSupportRoute,
+  MainWishlistRoute: MainWishlistRoute,
+  MainCategoriesSlugRoute: MainCategoriesSlugRoute,
+  MainPageSlugRoute: MainPageSlugRoute,
+  MainProductSlugRoute: MainProductSlugRoute,
+}
+
+const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
+
+interface OriginEmailCampaignsRouteChildren {
+  OriginEmailCampaignsIdRoute: typeof OriginEmailCampaignsIdRoute
+}
+
+const OriginEmailCampaignsRouteChildren: OriginEmailCampaignsRouteChildren = {
+  OriginEmailCampaignsIdRoute: OriginEmailCampaignsIdRoute,
+}
+
+const OriginEmailCampaignsRouteWithChildren =
+  OriginEmailCampaignsRoute._addFileChildren(OriginEmailCampaignsRouteChildren)
+
+interface OriginRouteChildren {
+  OriginAiSettingsRoute: typeof OriginAiSettingsRoute
+  OriginAnnouncementsRoute: typeof OriginAnnouncementsRoute
+  OriginAppearanceRoute: typeof OriginAppearanceRoute
+  OriginBannersRoute: typeof OriginBannersRoute
+  OriginBrandingRoute: typeof OriginBrandingRoute
+  OriginCallSettingsRoute: typeof OriginCallSettingsRoute
+  OriginCategoriesRoute: typeof OriginCategoriesRoute
+  OriginCmsPagesRoute: typeof OriginCmsPagesRoute
+  OriginCouponsRoute: typeof OriginCouponsRoute
+  OriginCourierManagementRoute: typeof OriginCourierManagementRoute
+  OriginCouriersRoute: typeof OriginCouriersRoute
+  OriginCustomerAnalyticsRoute: typeof OriginCustomerAnalyticsRoute
+  OriginCustomersRoute: typeof OriginCustomersRoute
+  OriginDbHealthRoute: typeof OriginDbHealthRoute
+  OriginDebugRoute: typeof OriginDebugRoute
+  OriginDeliveryOffersRoute: typeof OriginDeliveryOffersRoute
+  OriginEmailAutomationsRoute: typeof OriginEmailAutomationsRoute
+  OriginEmailCampaignsRoute: typeof OriginEmailCampaignsRouteWithChildren
+  OriginEmailProviderRoute: typeof OriginEmailProviderRoute
+  OriginEmailSubscribersRoute: typeof OriginEmailSubscribersRoute
+  OriginEmailTemplatesRoute: typeof OriginEmailTemplatesRoute
+  OriginFooterRoute: typeof OriginFooterRoute
+  OriginHomeRoute: typeof OriginHomeRoute
+  OriginLandingRoute: typeof OriginLandingRoute
+  OriginLiveActivityRoute: typeof OriginLiveActivityRoute
+  OriginMobileUiRoute: typeof OriginMobileUiRoute
+  OriginOrdersRoute: typeof OriginOrdersRoute
+  OriginPathaoRoute: typeof OriginPathaoRoute
+  OriginPaymentGatewaysRoute: typeof OriginPaymentGatewaysRoute
+  OriginProductsRoute: typeof OriginProductsRoute
+  OriginRecommendationsRoute: typeof OriginRecommendationsRoute
+  OriginRequestsRoute: typeof OriginRequestsRoute
+  OriginReturnsRoute: typeof OriginReturnsRoute
+  OriginReviewsRoute: typeof OriginReviewsRoute
+  OriginSeoRoute: typeof OriginSeoRoute
+  OriginSettingsRoute: typeof OriginSettingsRoute
+  OriginShippingRoute: typeof OriginShippingRoute
+  OriginShowcaseRoute: typeof OriginShowcaseRoute
+  OriginSupportRoute: typeof OriginSupportRoute
+  OriginTelegramRoute: typeof OriginTelegramRoute
+  OriginTrackingRoute: typeof OriginTrackingRoute
+  OriginUserPromosRoute: typeof OriginUserPromosRoute
+  OriginIndexRoute: typeof OriginIndexRoute
+  OriginCorporateAuditLogRoute: typeof OriginCorporateAuditLogRoute
+  OriginCorporateStaffRoute: typeof OriginCorporateStaffRoute
+  OriginCorporateIndexRoute: typeof OriginCorporateIndexRoute
+}
+
+const OriginRouteChildren: OriginRouteChildren = {
+  OriginAiSettingsRoute: OriginAiSettingsRoute,
+  OriginAnnouncementsRoute: OriginAnnouncementsRoute,
+  OriginAppearanceRoute: OriginAppearanceRoute,
+  OriginBannersRoute: OriginBannersRoute,
+  OriginBrandingRoute: OriginBrandingRoute,
+  OriginCallSettingsRoute: OriginCallSettingsRoute,
+  OriginCategoriesRoute: OriginCategoriesRoute,
+  OriginCmsPagesRoute: OriginCmsPagesRoute,
+  OriginCouponsRoute: OriginCouponsRoute,
+  OriginCourierManagementRoute: OriginCourierManagementRoute,
+  OriginCouriersRoute: OriginCouriersRoute,
+  OriginCustomerAnalyticsRoute: OriginCustomerAnalyticsRoute,
+  OriginCustomersRoute: OriginCustomersRoute,
+  OriginDbHealthRoute: OriginDbHealthRoute,
+  OriginDebugRoute: OriginDebugRoute,
+  OriginDeliveryOffersRoute: OriginDeliveryOffersRoute,
+  OriginEmailAutomationsRoute: OriginEmailAutomationsRoute,
+  OriginEmailCampaignsRoute: OriginEmailCampaignsRouteWithChildren,
+  OriginEmailProviderRoute: OriginEmailProviderRoute,
+  OriginEmailSubscribersRoute: OriginEmailSubscribersRoute,
+  OriginEmailTemplatesRoute: OriginEmailTemplatesRoute,
+  OriginFooterRoute: OriginFooterRoute,
+  OriginHomeRoute: OriginHomeRoute,
+  OriginLandingRoute: OriginLandingRoute,
+  OriginLiveActivityRoute: OriginLiveActivityRoute,
+  OriginMobileUiRoute: OriginMobileUiRoute,
+  OriginOrdersRoute: OriginOrdersRoute,
+  OriginPathaoRoute: OriginPathaoRoute,
+  OriginPaymentGatewaysRoute: OriginPaymentGatewaysRoute,
+  OriginProductsRoute: OriginProductsRoute,
+  OriginRecommendationsRoute: OriginRecommendationsRoute,
+  OriginRequestsRoute: OriginRequestsRoute,
+  OriginReturnsRoute: OriginReturnsRoute,
+  OriginReviewsRoute: OriginReviewsRoute,
+  OriginSeoRoute: OriginSeoRoute,
+  OriginSettingsRoute: OriginSettingsRoute,
+  OriginShippingRoute: OriginShippingRoute,
+  OriginShowcaseRoute: OriginShowcaseRoute,
+  OriginSupportRoute: OriginSupportRoute,
+  OriginTelegramRoute: OriginTelegramRoute,
+  OriginTrackingRoute: OriginTrackingRoute,
+  OriginUserPromosRoute: OriginUserPromosRoute,
+  OriginIndexRoute: OriginIndexRoute,
+  OriginCorporateAuditLogRoute: OriginCorporateAuditLogRoute,
+  OriginCorporateStaffRoute: OriginCorporateStaffRoute,
+  OriginCorporateIndexRoute: OriginCorporateIndexRoute,
+}
+
+const OriginRouteWithChildren =
+  OriginRoute._addFileChildren(OriginRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MainRoute: MainRouteWithChildren,
+  AffiliateHubRoute: AffiliateHubRoute,
+  OriginRoute: OriginRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiPublicUnsubscribeRoute: ApiPublicUnsubscribeRoute,
+  ApiPublicHooksAffiliateReportMonthlyRoute:
+    ApiPublicHooksAffiliateReportMonthlyRoute,
+  ApiPublicHooksAffiliateReportWeeklyRoute:
+    ApiPublicHooksAffiliateReportWeeklyRoute,
+  ApiPublicHooksDispatchEmailCampaignsRoute:
+    ApiPublicHooksDispatchEmailCampaignsRoute,
+  ApiPublicHooksProcessEmailAutomationsRoute:
+    ApiPublicHooksProcessEmailAutomationsRoute,
+  ApiPublicHooksResendWebhookRoute: ApiPublicHooksResendWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,105 +1,82 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
-  useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import * as React from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { LayoutProvider } from "@/contexts/LayoutContext";
+import SiteThemeProvider from "@/components/SiteThemeProvider";
+import { useDynamicFavicon } from "@/hooks/use-dynamic-favicon";
+import { Toaster } from "@/components/ui/toaster";
+import NotFound from "@/pages/NotFound";
 
-function NotFoundComponent() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+const SplashScreen = React.lazy(() => import("@/components/SplashScreen"));
+const AIChatWidget = React.lazy(() => import("@/components/AIChatWidget"));
+const PromoPopup = React.lazy(() => import("@/components/PromoPopup"));
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
-  const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+const SUPABASE_ORIGIN = (() => {
+  try {
+    return new URL(import.meta.env.VITE_SUPABASE_URL ?? "").origin;
+  } catch {
+    return "";
+  }
+})();
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Orizino" },
+      { name: "description", content: "Orizino — premium commerce" },
+      { property: "og:site_name", content: "Orizino" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#0a0a0a" },
+      { property: "og:title", content: "Orizino" },
+      { name: "twitter:title", content: "Orizino" },
+      { property: "og:description", content: "Orizino — premium commerce" },
+      { name: "twitter:description", content: "Orizino — premium commerce" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/edda2388-f14c-4014-a43c-20e13f1cc62f" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/edda2388-f14c-4014-a43c-20e13f1cc62f" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      ...(SUPABASE_ORIGIN
+        ? [
+            { rel: "preconnect", href: SUPABASE_ORIGIN, crossOrigin: "anonymous" as const },
+            { rel: "dns-prefetch", href: SUPABASE_ORIGIN },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+  notFoundComponent: () => <NotFound />,
+  errorComponent: ({ error }) => {
+    console.error(error);
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="max-w-md text-center">
+          <h1 className="text-xl font-semibold">Something went wrong</h1>
+          <a href="/" className="mt-4 inline-block text-primary underline">
+            Go home
+          </a>
+        </div>
+      </div>
+    );
+  },
 });
 
-function RootShell({ children }: { children: ReactNode }) {
+function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -113,13 +90,54 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function AppContent() {
+  useDynamicFavicon();
+  return null;
+}
+
+function useSplash() {
+  const [show, setShow] = React.useState(true);
+  React.useEffect(() => {
+    const t = setTimeout(() => setShow(false), 2200);
+    return () => clearTimeout(t);
+  }, []);
+  return show;
+}
+
+function ClientShell() {
+  const splash = useSplash();
+  return (
+    <>
+      <React.Suspense fallback={null}>
+        <SplashScreen visible={splash} />
+      </React.Suspense>
+      <SiteThemeProvider />
+      <AppContent />
+      <React.Suspense fallback={null}>
+        <AIChatWidget />
+        <PromoPopup />
+      </React.Suspense>
+      <Outlet />
+      <Toaster />
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <TooltipProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <CurrencyProvider>
+              <LayoutProvider>
+                <ClientShell />
+              </LayoutProvider>
+            </CurrencyProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }
