@@ -99,6 +99,9 @@ const AdminRecommendations = () => {
   const setWeight = (k: WeightKey, v: number) =>
     setForm((f) => ({ ...f, weights: { ...f.weights, [k]: v } }));
 
+  const setKindWeight = (k: KindKey, v: number) =>
+    setForm((f) => ({ ...f, kind_weights: { ...f.kind_weights, [k]: v } }));
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
