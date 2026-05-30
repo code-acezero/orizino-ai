@@ -178,7 +178,7 @@ Deno.serve(async (req) => {
     // Invoice + tax options
     const opts = {
       invoice_prefix: "INV",
-      accent_color: "#3730a3",
+      accent_color: "#B8902F",
       footer_note: "",
       terms: "",
       show_tax_line: true,
