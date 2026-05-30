@@ -56,6 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [notifyingRestock, setNotifyingRestock] = useState(false);
   const [flyAnim, setFlyAnim] = useState<{ src: string; rect: DOMRect } | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Fetch variant info
   const { data: variantInfo } = useQuery({
