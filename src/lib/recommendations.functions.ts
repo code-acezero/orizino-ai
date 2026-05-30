@@ -38,11 +38,21 @@ type Product = {
 };
 
 const DEFAULT_WEIGHTS = { affinity: 0.4, trending: 0.25, recent: 0.2, featured: 0.1, fresh: 0.05 };
-const KIND_WEIGHT: Record<string, number> = { view: 1, click: 1.5, wishlist: 2.5, cart: 3, purchase: 4, dwell: 0.5 };
+const DEFAULT_KIND_WEIGHTS: Record<string, number> = {
+  view: 1,
+  hover: 0.8,
+  click: 1.5,
+  wishlist: 2.5,
+  cart: 3,
+  purchase: 4,
+  dwell: 0.5,
+};
 
 type RecoConfig = {
   enabled: boolean;
   weights: typeof DEFAULT_WEIGHTS;
+  kind_weights: Record<string, number>;
+  freshness_days: number;
   diversity_cap: number;
   ai_rerank_enabled: boolean;
   ai_rerank_top_k: number;
@@ -52,6 +62,8 @@ type RecoConfig = {
 const DEFAULT_CONFIG: RecoConfig = {
   enabled: true,
   weights: DEFAULT_WEIGHTS,
+  kind_weights: DEFAULT_KIND_WEIGHTS,
+  freshness_days: 7,
   diversity_cap: 3,
   ai_rerank_enabled: false,
   ai_rerank_top_k: 24,
@@ -70,6 +82,7 @@ async function loadConfig(): Promise<RecoConfig> {
       ...DEFAULT_CONFIG,
       ...v,
       weights: { ...DEFAULT_WEIGHTS, ...(v.weights || {}) },
+      kind_weights: { ...DEFAULT_KIND_WEIGHTS, ...(v.kind_weights || {}) },
     };
   } catch {
     return DEFAULT_CONFIG;
