@@ -90,8 +90,31 @@ const TOOLS = [
 async function runTool(name: string, args: any, userId: string | null) {
   try {
     if (name === "search_products") {
-      let q = admin.from("products").select("id, name, slug, price, compare_at_price, thumbnail, category_id").eq("is_active", true).limit(args.limit ?? 6);
-      if (args.query) q = q.ilike("name", `%${args.query}%`);
+      const limit = Math.min(Math.max(args.limit ?? 6, 1), 12);
+      let q = admin
+        .from("products")
+        .select("id, name, slug, price, compare_at_price, thumbnail, short_description, tags, category_id")
+        .eq("is_active", true)
+        .limit(limit);
+      if (args.query) {
+        const raw = String(args.query).trim();
+        // Escape PostgREST reserved chars in the ilike pattern
+        const safe = raw.replace(/[%,()]/g, " ").trim();
+        const pattern = `%${safe}%`;
+        // Fuzzy match across name, slug, descriptions; also match individual tags
+        const orParts = [
+          `name.ilike.${pattern}`,
+          `slug.ilike.${pattern}`,
+          `short_description.ilike.${pattern}`,
+          `description.ilike.${pattern}`,
+        ];
+        // tags is text[] — match if any tag (or whole query) is contained
+        const tagTokens = [safe, ...safe.split(/\s+/)].filter((t) => t.length > 1);
+        for (const t of [...new Set(tagTokens)]) {
+          orParts.push(`tags.cs.{${t}}`);
+        }
+        q = q.or(orParts.join(","));
+      }
       if (args.max_price) q = q.lte("price", args.max_price);
       if (args.min_price) q = q.gte("price", args.min_price);
       if (args.category) {
@@ -100,7 +123,18 @@ async function runTool(name: string, args: any, userId: string | null) {
       }
       const { data, error } = await q;
       if (error) return { error: error.message };
-      return { products: data ?? [] };
+      // Surface a ready-to-render shape including thumbnail + storefront link
+      const products = (data ?? []).map((p: any) => ({
+        name: p.name,
+        slug: p.slug,
+        url: `/product/${p.slug}`,
+        price: p.price,
+        compare_at_price: p.compare_at_price,
+        thumbnail: p.thumbnail,
+        short_description: p.short_description,
+        tags: p.tags,
+      }));
+      return { products };
     }
     if (name === "get_order_status") {
       if (!userId) return { error: "Sign in required to view orders." };
