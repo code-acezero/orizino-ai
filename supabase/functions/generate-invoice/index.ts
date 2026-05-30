@@ -41,12 +41,13 @@ function buildHtml(
   opts: InvoiceOpts,
 ): string {
   const addr = order.shipping_address || {};
-  const rows = items.map((it) => `
-    <tr>
+  const accent = esc(opts.accent_color || "#B8902F");
+  const rows = items.map((it, i) => `
+    <tr style="background:${i % 2 ? "#FBF8F1" : "#fff"}">
       <td>${esc(it.product_name)}</td>
       <td style="text-align:center">${it.quantity}</td>
       <td style="text-align:right">${money(it.unit_price)}</td>
-      <td style="text-align:right">${money(it.total_price)}</td>
+      <td style="text-align:right;font-weight:600">${money(it.total_price)}</td>
     </tr>`).join("");
 
   const isPaid = String(order.payment_status || "").toLowerCase() === "paid"
@@ -56,60 +57,89 @@ function buildHtml(
   const taxAmount = opts.show_tax_line && opts.tax_rate > 0
     ? subtotal * (opts.tax_rate / 100)
     : 0;
+  const fullAddr = [addr.address_line1, addr.address_line2, addr.address, addr.city, addr.state, addr.postal_code, addr.country]
+    .filter(Boolean).map(esc).join(", ");
 
   return `<!doctype html><html><head><meta charset="utf-8"><title>Invoice ${esc(invoiceNumber)}</title>
   <style>
-    *{box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111;margin:0;padding:32px;max-width:820px;margin:auto;position:relative}
-    h1{margin:0 0 4px;font-size:28px}.muted{color:#666}.row{display:flex;justify-content:space-between;gap:24px;margin-bottom:24px}
-    .accent-bar{height:4px;background:${esc(opts.accent_color)};border-radius:2px;margin-bottom:24px}
-    table{width:100%;border-collapse:collapse;margin-top:16px}th,td{padding:10px;border-bottom:1px solid #eee;font-size:14px;text-align:left}
-    th{background:#fafafa;font-weight:600}.totals{margin-top:16px;width:280px;margin-left:auto}.totals td{border:none;padding:4px 0}
-    .totals tr.grand td{border-top:2px solid #111;font-weight:700;font-size:16px;padding-top:8px}
-    .badge{display:inline-block;padding:2px 10px;background:${esc(opts.accent_color)}1a;color:${esc(opts.accent_color)};border-radius:999px;font-size:12px;font-weight:600;text-transform:uppercase}
-    .paid-stamp{position:absolute;top:140px;right:60px;border:4px solid #16a34a;color:#16a34a;padding:8px 24px;font-size:32px;font-weight:800;letter-spacing:4px;transform:rotate(-12deg);opacity:.85;border-radius:8px}
-    .terms{margin-top:32px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#666;line-height:1.5}
-    @media print{body{padding:0}}
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+    *{box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,Segoe UI,Roboto,sans-serif;color:#14110F;margin:0;padding:48px 40px;max-width:880px;margin:auto;background:#fff;position:relative;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .serif{font-family:'Cormorant Garamond',Georgia,serif}
+    .topbar{height:6px;background:linear-gradient(90deg,${accent},#E4C879 55%,${accent});border-radius:99px;margin-bottom:36px}
+    .head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+    .brand-name{font-size:34px;font-weight:700;letter-spacing:.5px;margin:0;line-height:1}
+    .muted{color:#6B6B6B;font-size:13px;line-height:1.6}
+    .doc-title{font-size:46px;font-weight:700;color:${accent};margin:0;line-height:1;letter-spacing:1px}
+    .tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9a9a9a;margin-top:4px}
+    .inv-no{font-size:15px;font-weight:700;margin-top:10px}
+    .status{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${accent}}
+    .rule{height:1px;background:${accent};opacity:.5;margin:30px 0}
+    .info{display:flex;gap:16px;margin-bottom:8px}
+    .info .box{flex:1;background:#FBF8F1;border-radius:12px;padding:18px 20px}
+    .lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${accent};margin-bottom:8px}
+    .strong{font-weight:700;font-size:15px}
+    table.items{width:100%;border-collapse:collapse;margin-top:8px;border-radius:10px;overflow:hidden}
+    table.items thead th{background:#14110F;color:#fff;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:12px 14px;text-align:left}
+    table.items td{padding:13px 14px;border-bottom:1px solid #EFEBE0;font-size:14px}
+    .section-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${accent};margin:32px 0 6px}
+    .totals{margin-top:18px;width:320px;margin-left:auto;border-collapse:collapse}
+    .totals td{padding:7px 4px;font-size:14px;color:#6B6B6B}
+    .totals td.v{text-align:right;color:#14110F}
+    .totals tr.grand td{background:#14110F;color:#fff;font-weight:700;font-size:17px;padding:14px 16px;border-radius:8px}
+    .totals tr.grand td.v{color:${accent}}
+    .footer{text-align:center;margin-top:48px}
+    .footer .ty{font-size:18px;font-style:italic}
+    .terms{margin-top:28px;padding-top:14px;border-top:1px solid #EFEBE0;font-size:11px;color:#888;line-height:1.6}
+    @media print{body{padding:24px}}
   </style></head><body>
-    <div class="accent-bar"></div>
-    ${isPaid && opts.show_paid_stamp ? `<div class="paid-stamp">PAID</div>` : ""}
-    <div class="row">
+    <div class="topbar"></div>
+    <div class="head">
       <div>
-        <h1>${esc(brand.name)}</h1>
-        <div class="muted">${esc(brand.addr)}</div>
+        <h1 class="brand-name serif">${esc(brand.name)}</h1>
+        <div class="muted" style="margin-top:8px">${esc(brand.addr)}</div>
         <div class="muted">${esc(brand.email)}</div>
       </div>
       <div style="text-align:right">
-        <h1>INVOICE</h1>
-        <div class="muted">#${esc(invoiceNumber)}</div>
-        <div class="muted">${new Date(order.created_at).toLocaleDateString()}</div>
-        <div style="margin-top:6px"><span class="badge">${esc(order.status)}</span></div>
+        <h1 class="doc-title serif">INVOICE</h1>
+        <div class="tag">Tax Invoice</div>
+        <div class="inv-no">No. ${esc(invoiceNumber)}</div>
+        <div class="muted">${new Date(order.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</div>
+        <div class="status">&#9670; ${esc(order.status)}</div>
       </div>
     </div>
-    <div class="row">
-      <div>
-        <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:1px">Billed to</div>
-        <div style="font-weight:600">${esc(profile?.full_name || addr.name || "Customer")}</div>
-        <div class="muted">${esc(addr.address || "")}</div>
-        <div class="muted">${esc(addr.city || "")} ${esc(addr.postal_code || "")}</div>
-        <div class="muted">${esc(addr.phone || "")}</div>
+    <div class="rule"></div>
+    <div class="info">
+      <div class="box">
+        <div class="lbl">Billed To</div>
+        <div class="strong">${esc(profile?.full_name || addr.full_name || addr.name || "Customer")}</div>
+        <div class="muted" style="margin-top:6px">${fullAddr || esc(addr.address || "")}</div>
+        ${addr.phone ? `<div class="muted">Phone: ${esc(addr.phone)}</div>` : ""}
+        ${addr.email ? `<div class="muted">${esc(addr.email)}</div>` : ""}
       </div>
-      <div>
-        <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:1px">Payment</div>
-        <div>${esc(order.payment_method || "—")}</div>
-        ${order.transaction_id ? `<div class="muted">Txn: ${esc(order.transaction_id)}</div>` : ""}
+      <div class="box">
+        <div class="lbl">Payment</div>
+        <div class="strong">${esc(String(order.payment_method || "—").toUpperCase())}</div>
+        ${order.transaction_id ? `<div class="muted" style="margin-top:6px">Txn: ${esc(order.transaction_id)}</div>` : ""}
+        <div class="muted" style="margin-top:6px;font-style:italic;color:${isPaid ? "#2F7D4F" : "#6B6B6B"}">${isPaid ? "Settled in full" : "Payment outstanding"}</div>
       </div>
     </div>
-    <table><thead><tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Unit</th><th style="text-align:right">Total</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="section-lbl">Order Summary</div>
+    <table class="items"><thead><tr><th>Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Unit</th><th style="text-align:right">Amount</th></tr></thead><tbody>${rows}</tbody></table>
     <table class="totals"><tbody>
-      <tr><td>Subtotal</td><td style="text-align:right">${money(subtotal)}</td></tr>
-      ${taxAmount > 0 ? `<tr><td>Tax (${opts.tax_rate}%)</td><td style="text-align:right">${money(taxAmount)}</td></tr>` : ""}
-      <tr><td>Shipping</td><td style="text-align:right">${money(order.shipping_fee)}</td></tr>
-      ${order.coupon_discount ? `<tr><td>Coupon (${esc(order.coupon_code)})</td><td style="text-align:right">−${money(order.coupon_discount)}</td></tr>` : ""}
-      ${order.loyalty_discount ? `<tr><td>Loyalty</td><td style="text-align:right">−${money(order.loyalty_discount)}</td></tr>` : ""}
-      <tr class="grand"><td>Total</td><td style="text-align:right">${money(order.total)}</td></tr>
+      <tr><td>Subtotal</td><td class="v">${money(subtotal)}</td></tr>
+      ${taxAmount > 0 ? `<tr><td>Tax (${opts.tax_rate}%)</td><td class="v">${money(taxAmount)}</td></tr>` : ""}
+      <tr><td>Shipping</td><td class="v">${money(order.shipping_fee)}</td></tr>
+      ${order.coupon_discount ? `<tr><td>Discount (${esc(order.coupon_code)})</td><td class="v" style="color:#2F7D4F">−${money(order.coupon_discount)}</td></tr>` : ""}
+      ${order.loyalty_discount ? `<tr><td>Loyalty Reward</td><td class="v" style="color:#2F7D4F">−${money(order.loyalty_discount)}</td></tr>` : ""}
+      <tr class="grand"><td>Total Due</td><td class="v">${money(order.total)}</td></tr>
     </tbody></table>
-    <p class="muted" style="text-align:center;margin-top:48px;font-size:13px">${esc(opts.footer_note || `Thank you for shopping with ${brand.name}.`)}</p>
-    ${opts.terms ? `<div class="terms"><strong>Terms & Conditions</strong><br/>${esc(opts.terms)}</div>` : ""}
+    <div class="footer">
+      <div class="rule" style="margin-bottom:18px"></div>
+      <div class="ty serif">${esc(opts.footer_note || `Thank you for choosing ${brand.name}.`)}</div>
+      <div class="muted" style="margin-top:6px">This is a computer-generated invoice and does not require a signature.</div>
+    </div>
+    ${opts.terms ? `<div class="terms"><strong>Terms &amp; Conditions</strong><br/>${esc(opts.terms)}</div>` : ""}
   </body></html>`;
 }
 
@@ -148,7 +178,7 @@ Deno.serve(async (req) => {
     // Invoice + tax options
     const opts = {
       invoice_prefix: "INV",
-      accent_color: "#3730a3",
+      accent_color: "#B8902F",
       footer_note: "",
       terms: "",
       show_tax_line: true,

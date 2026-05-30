@@ -8,6 +8,7 @@ import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle
 import { toast } from "@/lib/app-toast";
 import { format } from "date-fns";
 import { removeOrderDocument } from "@/lib/order-documents.functions";
+import { downloadInvoiceDocx, downloadStickerDocx, type DocxBrand } from "@/lib/invoice-docx";
 
 interface Props {
   orderId: string;
@@ -45,22 +46,48 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     },
   });
 
-  const archive = async (doc_type: "invoice" | "sticker") => {
-    setBusy(`archive:${doc_type}`);
+  const loadBrand = async (): Promise<DocxBrand> => {
+    const fallback: DocxBrand = { name: "Orizino", currency: "৳", prefix: "INV" };
     try {
-      const { data, error } = await supabase.functions.invoke("archive-to-gdocs", {
-        body: { order_id: orderId, doc_type, trigger_reason: "manual" },
-      });
-      if (error || data?.error) {
-        const code = data?.code ? ` [${data.code}]` : "";
-        toast.error((data?.error || error?.message || "Archive failed") + code);
+      const { data } = await supabase
+        .from("site_settings")
+        .select("key, value")
+        .in("key", ["brand_settings", "invoice_settings"]);
+      const map: Record<string, any> = {};
+      for (const r of data || []) map[(r as any).key] = (r as any).value || {};
+      const b = map.brand_settings || {};
+      const inv = map.invoice_settings || {};
+      return {
+        name: b.brand_name || b.site_name || "Orizino",
+        addr: b.address || "",
+        email: b.support_email || "",
+        phone: b.phone || b.support_phone || "",
+        currency: b.currency_symbol || "৳",
+        prefix: inv.invoice_prefix || "INV",
+        footer: inv.footer_note || "",
+      };
+    } catch {
+      return fallback;
+    }
+  };
+
+  const downloadDocx = async (doc_type: "invoice" | "sticker") => {
+    setBusy(`docx:${doc_type}`);
+    try {
+      const [{ data: order, error: oErr }, brand] = await Promise.all([
+        supabase.from("orders").select("*").eq("id", orderId).maybeSingle(),
+        loadBrand(),
+      ]);
+      if (oErr || !order) throw new Error(oErr?.message || "Order not found");
+      if (doc_type === "invoice") {
+        const { data: items } = await supabase.from("order_items").select("*").eq("order_id", orderId);
+        await downloadInvoiceDocx(order, items || [], brand);
       } else {
-        toast.success(`${doc_type === "invoice" ? "Invoice" : "Sticker"} saved to Google Docs`);
-        qc.invalidateQueries({ queryKey: ["order_documents", orderId] });
-        if (data?.document?.external_url) window.open(data.document.external_url, "_blank");
+        await downloadStickerDocx(order, brand);
       }
+      toast.success(`${doc_type === "invoice" ? "Invoice" : "Sticker"} downloaded (.docx)`);
     } catch (e: any) {
-      toast.error(e?.message || "Archive failed");
+      toast.error(e?.message || "Download failed");
     }
     setBusy(null);
   };
@@ -105,20 +132,20 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div>
           <div className="text-sm font-semibold flex items-center gap-2">
-            <FileBox className="w-4 h-4 text-primary" /> Google Docs Archive
+            <FileBox className="w-4 h-4 text-primary" /> Documents
           </div>
           <div className="text-xs text-muted-foreground">
-            Save invoice & shipping sticker for order #{orderNumber} to Google Drive.
+            Download a premium invoice & shipping label for order #{orderNumber} as Word (.docx).
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => archive("invoice")} className="gap-1.5">
-            {busy === "archive:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-            Save Invoice
+          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
+            {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+            Invoice .docx
           </Button>
-          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => archive("sticker")} className="gap-1.5">
-            {busy === "archive:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
-            Save Sticker
+          <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
+            {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
+            Sticker .docx
           </Button>
         </div>
       </div>
