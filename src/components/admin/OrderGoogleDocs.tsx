@@ -8,6 +8,7 @@ import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle
 import { toast } from "@/lib/app-toast";
 import { format } from "date-fns";
 import { removeOrderDocument } from "@/lib/order-documents.functions";
+import { downloadInvoiceDocx, downloadStickerDocx, type DocxBrand } from "@/lib/invoice-docx";
 
 interface Props {
   orderId: string;
