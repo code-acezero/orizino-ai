@@ -180,7 +180,6 @@ export function buildInvoicePdf(order: any, items: any[], brand: PdfBrand): jsPD
       2: { halign: "right", cellWidth: 30 },
       3: { halign: "right", cellWidth: 32, fontStyle: "bold" },
     },
-    headStyles2: {} as any,
   });
 
   // Totals
