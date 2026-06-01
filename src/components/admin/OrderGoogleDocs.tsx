@@ -165,7 +165,7 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
             <FileBox className="w-4 h-4 text-primary" /> Documents
           </div>
           <div className="text-xs text-muted-foreground">
-            Save the invoice & shipping label for order #{orderNumber} to Google Docs, or download locally as Word (.docx).
+            Save the invoice & shipping label for order #{orderNumber} to Google Docs, or download a premium PDF locally.
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -180,13 +180,13 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
             </Button>
           </div>
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
-              {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-              Invoice .docx
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadPdf("invoice")} className="gap-1.5">
+              {busy === "pdf-local:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+              Invoice PDF
             </Button>
-            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
-              {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
-              Sticker .docx
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadPdf("sticker")} className="gap-1.5">
+              {busy === "pdf-local:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
+              Sticker PDF
             </Button>
           </div>
         </div>
