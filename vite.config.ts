@@ -24,12 +24,6 @@ export default defineConfig({
 
     server: { entry: "server" },
 
-    // Emit a prerendered SPA shell as index.html so the app can be hosted on
-    // any static/edge platform (Netlify, Vercel, Cloudflare Pages). Without it
-    // there is no index.html and the SPA fallback in public/_redirects 404s.
-
-    spa: { enabled: true, prerender: { outputPath: "/index" } },
-
   },
 
 });
