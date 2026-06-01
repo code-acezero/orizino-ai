@@ -8,7 +8,8 @@ import { FileBox, FileText, ExternalLink, Trash2, Loader2, Download, AlertCircle
 import { toast } from "@/lib/app-toast";
 import { format } from "date-fns";
 import { removeOrderDocument } from "@/lib/order-documents.functions";
-import { downloadInvoiceDocx, downloadStickerDocx, type DocxBrand } from "@/lib/invoice-docx";
+import { archiveOrderToGdocs, exportOrderDocPdf } from "@/lib/order-gdocs.functions";
+import { downloadInvoicePdf, downloadStickerPdf, type PdfBrand } from "@/lib/invoice-pdf";
 
 interface Props {
   orderId: string;
@@ -31,6 +32,8 @@ interface OrderDoc {
 export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
   const qc = useQueryClient();
   const removeFn = useServerFn(removeOrderDocument);
+  const archiveFn = useServerFn(archiveOrderToGdocs);
+  const exportPdfFn = useServerFn(exportOrderDocPdf);
   const [busy, setBusy] = useState<string | null>(null);
 
   const { data: docs = [], isLoading } = useQuery({
@@ -46,8 +49,8 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     },
   });
 
-  const loadBrand = async (): Promise<DocxBrand> => {
-    const fallback: DocxBrand = { name: "Orizino", currency: "৳", prefix: "INV" };
+  const loadBrand = async (): Promise<PdfBrand> => {
+    const fallback: PdfBrand = { name: "Orizino", currency: "৳", prefix: "INV" };
     try {
       const { data } = await supabase
         .from("site_settings")
@@ -71,8 +74,8 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     }
   };
 
-  const downloadDocx = async (doc_type: "invoice" | "sticker") => {
-    setBusy(`docx:${doc_type}`);
+  const downloadPdf = async (doc_type: "invoice" | "sticker") => {
+    setBusy(`pdf-local:${doc_type}`);
     try {
       const [{ data: order, error: oErr }, brand] = await Promise.all([
         supabase.from("orders").select("*").eq("id", orderId).maybeSingle(),
@@ -81,11 +84,11 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
       if (oErr || !order) throw new Error(oErr?.message || "Order not found");
       if (doc_type === "invoice") {
         const { data: items } = await supabase.from("order_items").select("*").eq("order_id", orderId);
-        await downloadInvoiceDocx(order, items || [], brand);
+        downloadInvoicePdf(order, items || [], brand);
       } else {
-        await downloadStickerDocx(order, brand);
+        downloadStickerPdf(order, brand);
       }
-      toast.success(`${doc_type === "invoice" ? "Invoice" : "Sticker"} downloaded (.docx)`);
+      toast.success(`${doc_type === "invoice" ? "Invoice" : "Sticker"} downloaded (PDF)`);
     } catch (e: any) {
       toast.error(e?.message || "Download failed");
     }
@@ -95,17 +98,15 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
   const saveToDocs = async (doc_type: "invoice" | "sticker") => {
     setBusy(`gdocs:${doc_type}`);
     try {
-      const { data, error } = await supabase.functions.invoke("archive-to-gdocs", {
-        body: { order_id: orderId, doc_type, trigger_reason: "manual" },
-      });
-      if (error || data?.error) {
+      const data: any = await archiveFn({ data: { order_id: orderId, doc_type, trigger_reason: "manual" } });
+      if (data?.error) {
         const code = data?.code || "";
         const msg =
           code === "gdocs_not_connected"
             ? "Google Docs is not connected yet."
             : code === "gdocs_auth"
             ? "Google authorization expired — please reconnect Google Docs."
-            : data?.error || error?.message || "Failed to save to Google Docs";
+            : data?.error || "Failed to save to Google Docs";
         toast.error(msg);
       } else {
         toast.success(
@@ -130,11 +131,9 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
     }
     setBusy(`pdf:${id}`);
     try {
-      const { data, error } = await supabase.functions.invoke("gdocs-export-pdf", {
-        body: { order_document_id: id },
-      });
-      if (error || data?.error) {
-        toast.error(data?.error || error?.message || "PDF export failed");
+      const data: any = await exportPdfFn({ data: { order_document_id: id } });
+      if (data?.error) {
+        toast.error(data?.error || "PDF export failed");
       } else {
         toast.success("PDF saved");
         qc.invalidateQueries({ queryKey: ["order_documents", orderId] });
@@ -166,7 +165,7 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
             <FileBox className="w-4 h-4 text-primary" /> Documents
           </div>
           <div className="text-xs text-muted-foreground">
-            Save the invoice & shipping label for order #{orderNumber} to Google Docs, or download locally as Word (.docx).
+            Save the invoice & shipping label for order #{orderNumber} to Google Docs, or download a premium PDF locally.
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -181,13 +180,13 @@ export default function OrderGoogleDocs({ orderId, orderNumber }: Props) {
             </Button>
           </div>
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("invoice")} className="gap-1.5">
-              {busy === "docx:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-              Invoice .docx
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadPdf("invoice")} className="gap-1.5">
+              {busy === "pdf-local:invoice" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+              Invoice PDF
             </Button>
-            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadDocx("sticker")} className="gap-1.5">
-              {busy === "docx:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
-              Sticker .docx
+            <Button size="sm" variant="outline" disabled={!!busy} onClick={() => downloadPdf("sticker")} className="gap-1.5">
+              {busy === "pdf-local:sticker" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileBox className="w-3.5 h-3.5" />}
+              Sticker PDF
             </Button>
           </div>
         </div>
