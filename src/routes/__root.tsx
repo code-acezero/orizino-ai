@@ -17,6 +17,7 @@ import SiteThemeProvider from "@/components/SiteThemeProvider";
 import { useDynamicFavicon } from "@/hooks/use-dynamic-favicon";
 import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/NotFound";
+import ZoneGuard from "@/components/ZoneGuard";
 
 const SplashScreen = React.lazy(() => import("@/components/SplashScreen"));
 const AIChatWidget = React.lazy(() => import("@/components/AIChatWidget"));
