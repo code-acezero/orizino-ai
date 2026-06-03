@@ -109,6 +109,7 @@ function ClientShell() {
   const splash = useSplash();
   return (
     <>
+      <ZoneGuard />
       <React.Suspense fallback={null}>
         <SplashScreen visible={splash} />
       </React.Suspense>
